@@ -35,8 +35,6 @@ Public defaults are provided for usability. Exact study calibration may differ a
 - `build_failure_register(...)`
 - `build_reliability_register(...)`
 
-  The public implementation lives in src/core_pipeline.py and this README, together with docs/algorithm.md, documents the protected method.
-
 ## What is intentionally omitted
 
 - Raw data
@@ -50,23 +48,20 @@ Public defaults are provided for usability. Exact study calibration may differ a
 
 ```python
 import numpy as np
-from core_pipeline import validate_regime
+import core_pipeline as cp
 
-before = np.array([...])
-during = np.array([...])
+cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
+# Alternatively, register the series in cp.LOG_SERIES if log transformation is appropriate.
 
-result = validate_regime(
-    series_name="YOUR_SERIES",
-    before_values=before,
-    during_values=during,
-    pair_id="YOUR_SERIES|Window_1",
+before = np.array([...], dtype=float)
+during = np.array([...], dtype=float)
+
+result = cp.validate_regime(
+series_name="YOUR_SERIES",
+before_values=before,
+during_values=during,
+pair_id="YOUR_SERIES|Window_1",
 )
-
-print(result["status"])
-print(result["segmented"])
-print(result["d_global"])
-print(result["d_local"])
-print(result["mse_improvement"])
 ```
 
 ## Design notes
@@ -75,21 +70,6 @@ print(result["mse_improvement"])
 - FFD uses the fixed-width López de Prado variant.
 - Train/test splitting is strictly chronological.
 - The public reliability register is intentionally compact.
-
-## Requirements
-
-This module was tested with:
-
-- Python 3.10+
-- numpy
-- pandas
-- statsmodels
-
-You can install dependencies with:
-
-```bash
-pip install numpy pandas statsmodels
-```
 
 ## Reference
 
