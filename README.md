@@ -35,6 +35,8 @@ Public defaults are provided for usability. Exact study calibration may differ a
 - `build_failure_register(...)`
 - `build_reliability_register(...)`
 
+  The public implementation lives in src/core_pipeline.py and this README, together with docs/algorithm.md, documents the protected method.
+
 ## What is intentionally omitted
 
 - Raw data
@@ -73,6 +75,21 @@ print(result["mse_improvement"])
 - FFD uses the fixed-width López de Prado variant.
 - Train/test splitting is strictly chronological.
 - The public reliability register is intentionally compact.
+
+## Requirements
+
+This module was tested with:
+
+- Python 3.10+
+- numpy
+- pandas
+- statsmodels
+
+You can install dependencies with:
+
+```bash
+pip install numpy pandas statsmodels
+```
 
 ## Reference
 
