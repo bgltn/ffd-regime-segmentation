@@ -1,103 +1,75 @@
-# Algorithm Specification
+# FFD Regime Segmentation Pipeline
 
-## FFD-Based Regime Segmentation of Macroeconomic Series
+Protected public methodology companion for a paper on fractionally differentiated regime segmentation of macroeconomic release series.
 
-This document describes a protected public version of the pipeline used to test whether the memory structure of a macroeconomic series changes across an exogenous regime window.
+## Overview
 
-## Notation
+This repository exposes the methodological core needed to understand and run an abstract version of the pipeline on user-supplied arrays, while intentionally omitting proprietary data, private ingestion logic, and the full internal robustness layer used in the research workflow.
 
-| Symbol | Definition |
-|---|---|
-| \(x_t\) | Raw macro release series |
-| \(\tilde{x}_t\) | Transformed series: log for index-like variables, levels for rate-like variables |
-| \(d\) | Fractional differencing order on an admissible grid in \([0,1]\) |
-| \(FFD_d(\tilde{x})\) | Fixed-width fractionally differenced series |
-| \(d^*\) | Minimal admissible differencing order under an ADF criterion |
-| \(d_{global}\) | Minimal admissible order estimated on the baseline sample |
-| \(d_{local}\) | Minimal admissible order estimated on the regime-training sample |
-| \(\Delta d\) | \(d_{local} - d_{global}\) |
+## Framework
 
-## Pipeline
+| Stage | Layer | Purpose |
+|---|---|---|
+| 1 | Transformation | Map raw series to an economically meaningful scale (log or level) |
+| 2 | FFD | Apply fixed-width fractional differencing |
+| 3 | Admissibility | Estimate the minimal admissible differencing order using ADF |
+| 4 | Validation | Compare baseline and regime-specific orders under a causal split |
+| 5 | Decision | Label segmented only if predictive improvement and a material memory shift both hold |
+| 6 | Audit | Report failure reasons and compact reliability warnings |
 
-### 1. Transformation
+## Segmentation rule
 
-Each raw series is first mapped to an economically meaningful scale:
+A `(series, regime-window)` pair is labelled **SEGMENTED** only if both conditions hold:
 
-\[
-\tilde{x}_t =
-\begin{cases}
-\log(x_t), & \text{for index-like series} \\
- x_t, & \text{for rate-like series}
-\end{cases}
-\]
+1. The local specification improves out-of-sample performance relative to the baseline specification by at least a minimum threshold.
+2. The change in admissible differencing order is large enough to be economically meaningful.
 
-This transformation is applied before FFD.
+Public defaults are provided for usability. Exact study calibration may differ and can be stated in the paper.
 
-### 2. Fixed-width FFD
+## Public API
 
-The transformed series is filtered using the fixed-width fractional differencing operator with recursive binomial weights:
+- `transform_series(...)`
+- `ffd_fixed_width(...)`
+- `estimate_d_stat95(...)`
+- `validate_regime(...)`
+- `build_failure_register(...)`
+- `build_reliability_register(...)`
 
-\[
-w_0 = 1, \qquad w_k = -w_{k-1}\frac{d-k+1}{k}, \quad k \ge 1
-\]
+## What is intentionally omitted
 
-Weights are truncated using a tolerance parameter, which determines the effective filter width.
+- Raw data
+- Private file paths
+- Vendor-specific ingestion code
+- Internal notebooks
+- Full internal robustness heuristics
+- Study-specific regime catalogues and series registries
 
-### 3. Minimal admissible order
+## Quick start
 
-For each candidate order on a coarse admissible grid in \([0,1]\):
+```python
+import numpy as np
+import core_pipeline as cp
 
-1. apply \(FFD_d\) to the transformed series,
-2. run the ADF test on the filtered output,
-3. return the smallest \(d\) that satisfies the stationarity criterion.
+cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
+# Alternatively, register the series in cp.LOG_SERIES if log transformation is appropriate.
 
-If no candidate order satisfies the criterion, the pair is marked inadmissible at this stage.
+before = np.array([...], dtype=float)
+during = np.array([...], dtype=float)
 
-### 4. Regime validation
+result = cp.validate_regime(
+series_name="YOUR_SERIES",
+before_values=before,
+during_values=during,
+pair_id="YOUR_SERIES|Window_1",
+)
+```
 
-For a `(series, regime-window)` pair:
+## Design notes
 
-1. apply pre-gates for minimum sample size,
-2. transform the baseline and regime samples,
-3. split the regime sample chronologically into training and test partitions,
-4. estimate \(d_{global}\) on the baseline,
-5. estimate \(d_{local}\) on the regime-training partition,
-6. score both orders out of sample on the regime test partition,
-7. compare predictive performance and \(|\Delta d|\).
-
-### 5. Segmentation decision
-
-A pair is labelled **SEGMENTED** only if:
-
-- the local order improves out-of-sample predictive loss relative to the baseline order by at least a prespecified threshold, and
-- the absolute change in differencing order exceeds a materiality threshold.
-
-Exact calibration belongs to the study design and can be stated in the paper without embedding the full internal calibration layer in public code.
-
-## Public audit layer
-
-### Failure register
-
-Every non-segmented or infeasible pair receives a failure category, such as:
-
-- baseline too short,
-- regime sample too short,
-- transform error,
-- ADF infeasible,
-- OOS score undefined,
-- predictive gain below threshold,
-- memory shift below threshold.
-
-### Reliability register
-
-The public reliability register is intentionally compact. It reports only broad warnings such as:
-
-- boundary solutions,
-- sample-size binding,
-- sensitivity of the stationarity evidence near the decision threshold,
-- generic stability warnings under alternative specifications.
-
-More detailed internal heuristics may be retained privately.
+- Transformation is applied before FFD.
+- FFD uses the fixed-width López de Prado variant.
+- Train/test splitting is strictly chronological.
+- The public reliability register is intentionally compact.
 
 ## Reference
 
