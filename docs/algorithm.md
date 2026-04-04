@@ -1,6 +1,6 @@
 # Algorithm Specification
 
-## FFD-Based Regime Segmentation of Macroeconomic Release Series
+## FFD-Based Regime Segmentation of Macroeconomic Series
 
 This document describes a protected public version of the pipeline used to test whether the memory structure of a macroeconomic series changes across an exogenous regime window.
 
