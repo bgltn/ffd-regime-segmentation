@@ -57,12 +57,19 @@ before = np.array([...], dtype=float)
 during = np.array([...], dtype=float)
 
 result = cp.validate_regime(
-series_name="YOUR_SERIES",
-before_values=before,
-during_values=during,
-pair_id="YOUR_SERIES|Window_1",
+    series_name="YOUR_SERIES",
+    before_values=before,
+    during_values=during,
+    pair_id="YOUR_SERIES|Window_1",
 )
+
+print(result["status"])
+print(result["segmented"])
+print(result["d_global"])
+print(result["d_local"])
+print(result["mse_improvement"])
 ```
+Before calling `validate_regime(...)`, register the series in `LOG_SERIES` or `LEVEL_SERIES`, since `transform_series(...)` depends on the public series registry.
 
 ## Design notes
 
