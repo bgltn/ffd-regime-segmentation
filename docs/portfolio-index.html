@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S2 — FFD Segmentation Reliability Audit</title>
+  <meta name="description" content="Public portfolio for accepted regime-shift cases in the audited FFD segmentation release.">
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --surface-2: #f2eee7;
+      --text: #1b1915;
+      --muted: #666158;
+      --border: #ddd7cc;
+      --accent: #145c72;
+      --good: #2f6e46;
+      --warn: #845321;
+      --radius: 12px;
+      --shadow: 0 8px 28px rgba(31, 26, 19, 0.05);
+      --content: 1100px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: var(--content); margin: 0 auto; padding: 28px 20px 72px; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .logo { width: 34px; height: 34px; color: var(--accent); flex: 0 0 auto; }
+    .brand-text { font-size: 0.95rem; color: var(--muted); letter-spacing: 0.02em; }
+    .hero { padding: 10px 0 18px; }
+    .eyebrow { font-size: 0.86rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
+    h1, h2, h3 { line-height: 1.16; margin: 0 0 12px; }
+    h1 { font-size: clamp(2.2rem, 5vw, 4rem); max-width: 11ch; }
+    h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
+    h3 { font-size: 1.02rem; }
+    p { max-width: 76ch; margin: 0 0 12px; }
+    .lede { font-size: 1.06rem; }
+    .callout {
+      margin: 20px 0; padding: 15px 17px; background: var(--surface);
+      border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;
+      box-shadow: var(--shadow); border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .quick-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .quick-links a {
+      border: 1px solid var(--border); background: var(--surface);
+      padding: 8px 12px; border-radius: 999px; font-size: 0.95rem;
+    }
+    .layout { display: grid; grid-template-columns: 220px 1fr; gap: 34px; margin-top: 24px; }
+    .side { position: sticky; top: 16px; align-self: start; }
+    .side nav { display: grid; gap: 8px; }
+    .side a { color: var(--muted); font-size: 0.95rem; }
+    .content { display: grid; gap: 18px; }
+    section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 22px 24px; box-shadow: var(--shadow);
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
+    .box { border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 14px; }
+    .table-wrap { overflow-x: auto; margin-top: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; font-size: 0.95rem; }
+    th, td { text-align: left; vertical-align: top; padding: 11px 10px; border-bottom: 1px solid var(--border); }
+    th { background: var(--surface-2); }
+    pre {
+      margin: 14px 0; padding: 14px; overflow-x: auto; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--surface-2);
+      font-size: 0.92rem; line-height: 1.5;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .charts { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; margin-top: 14px; }
+    .chart-card { border: 1px solid var(--border); background: var(--surface-2); border-radius: 10px; padding: 14px; }
+    .chart-caption, .note { color: var(--muted); font-size: 0.93rem; }
+    .repo-url { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--surface-2); padding: 2px 6px; border-radius: 6px; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    li { margin-bottom: 8px; }
+    @media (max-width: 920px) {
+      .layout { grid-template-columns: 1fr; }
+      .side { position: static; }
+      .grid-2, .charts { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .wrap { padding: 20px 14px 56px; }
+      section { padding: 18px 16px 20px; }
+      h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 48 48" aria-label="S2 logo" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="36" height="36" rx="10" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M15 30.5C17.2 33 20 34 23 34C27.6 34 30.5 31.8 30.5 28.8C30.5 26.4 28.9 24.9 24.6 23.8L22 23.1C18.5 22.2 16.7 20.7 16.7 18.2C16.7 14.8 19.9 12.4 24.4 12.4C27.2 12.4 29.8 13.1 32 14.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M34.2 18.5L24.5 28.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">Accepted cases within the public audited release</div>
+      </div>
+    </header>
+
+    <section class="hero" id="home">
+      <p class="eyebrow">Research portfolio · protected public methodology companion</p>
+      <h1>S2 — FFD Segmentation Reliability Audit</h1>
+      <p class="lede">
+        This repository documents a filtered set of ten empirically admissible regime-shift cases in which local fractional differencing improves out-of-sample performance relative to a global benchmark, together with a compact public reliability register.
+      </p>
+      <div class="callout">
+        <p><strong>Main result.</strong> Out of 168 tested series-window pairs, only 10 passed the public admissibility, out-of-sample, and segmentation gates.</p>
+      </div>
+      <p>
+        The portfolio is framed as a focused research set of accepted cases rather than as a production forecasting platform or a claim of universal predictive generality.
+      </p>
+      <div class="quick-links" aria-label="Primary links">
+        <a href="#results">Results</a>
+        <a href="#figures">Figures</a>
+        <a href="#method">Method</a>
+        <a href="#reliability">Reliability</a>
+        <a href="#reproducibility">Reproducibility</a>
+        <a href="../README.md">README</a>
+        <a href="../core_pipeline.py">Public core pipeline</a>
+        <a href="../algorithm.md">Algorithm note</a>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="side">
+        <nav aria-label="Section navigation">
+          <a href="#abstract">Abstract</a>
+          <a href="#results">Accepted cases</a>
+          <a href="#figures">Figures</a>
+          <a href="#interpretation">Interpretation</a>
+          <a href="#method">Method</a>
+          <a href="#gates">Gating logic</a>
+          <a href="#reliability">Reliability logic</a>
+          <a href="#limitations">Limitations</a>
+          <a href="#reproducibility">Reproducibility</a>
+          <a href="#repo-structure">Repository structure</a>
+          <a href="#links">Links</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section id="abstract">
+          <h2>Abstract</h2>
+          <p>
+            This public release presents the methodological core of an FFD-based regime segmentation pipeline for macroeconomic release series. For each predefined break window, the framework asks whether a local differencing order estimated on regime data improves out-of-sample performance relative to a global benchmark estimated from pre-regime history.
+          </p>
+          <p>
+            A pair is retained only if both conditions hold: the local specification improves out-of-sample mean squared error by at least the public threshold, and the implied change in admissible differencing order is materially non-zero. Proprietary data, ingestion logic, and the full internal robustness layer are intentionally excluded from the public release.
+          </p>
+        </section>
+
+        <section id="results">
+          <h2>Accepted cases</h2>
+          <p>
+            Out of 168 tested series-window pairs, 10 satisfied the public admissibility, out-of-sample, and segmentation criteria.
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Series</th>
+                  <th>Break</th>
+                  <th>Window</th>
+                  <th>Ntrain</th>
+                  <th>Ntest</th>
+                  <th>d<sub>global</sub></th>
+                  <th>d<sub>local</sub></th>
+                  <th>&Delta;d</th>
+                  <th>MSE improvement</th>
+                  <th>Reliability flag</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>NAPMPMI</td><td>Eurozone</td><td>EurozoneW3</td><td>8</td><td>6</td><td>0.7000</td><td>0.9500</td><td>0.2500</td><td>0.6047</td><td>boundary</td></tr>
+                <tr><td>CPI</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.0500</td><td>0.7000</td><td>0.6500</td><td>0.5204</td><td>none</td></tr>
+                <tr><td>MXUERATE</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.5500</td><td>0.0000</td><td>-0.5500</td><td>0.3313</td><td>boundary</td></tr>
+                <tr><td>MXUERATE</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.0000</td><td>0.5500</td><td>0.5500</td><td>0.2940</td><td>boundary</td></tr>
+                <tr><td>IPLAST</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.2500</td><td>0.2000</td><td>-0.0500</td><td>0.2764</td><td>none</td></tr>
+                <tr><td>NAPMNMI</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.4000</td><td>0.0000</td><td>-0.4000</td><td>0.2035</td><td>boundary</td></tr>
+                <tr><td>MXCP</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.0500</td><td>0.2500</td><td>0.2000</td><td>0.2018</td><td>none</td></tr>
+                <tr><td>MXCCLAST</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.6500</td><td>0.2500</td><td>-0.4000</td><td>0.1708</td><td>none</td></tr>
+                <tr><td>NAPMPMI</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.4000</td><td>0.1000</td><td>-0.3000</td><td>0.1668</td><td>none</td></tr>
+                <tr><td>CPIX</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.5500</td><td>0.1500</td><td>-0.4000</td><td>0.0909</td><td>none</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="figures">
+          <h2>Figures</h2>
+          <p>
+            These summary plots are embedded directly in the page to support the accepted-case table with compact visual evidence.
+          </p>
+          <div class="charts">
+            <div class="chart-card">
+              <h3>MSE improvement by accepted case</h3>
+              <svg viewBox="0 0 520 280" width="100%" role="img" aria-label="Horizontal bar chart of MSE improvement across the ten accepted cases" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="520" height="280" fill="#ffffff"/>
+                <line x1="120" y1="24" x2="120" y2="246" stroke="#bdb5aa"/>
+                <line x1="120" y1="246" x2="492" y2="246" stroke="#bdb5aa"/>
+                <g font-size="11" fill="#444">
+                  <text x="120" y="264">0.00</text><text x="194" y="264">0.12</text><text x="268" y="264">0.24</text><text x="342" y="264">0.36</text><text x="416" y="264">0.48</text><text x="482" y="264">0.60</text>
+                </g>
+                <g font-size="10" fill="#444" text-anchor="end">
+                  <text x="114" y="39">NAPMPMI EZ W3</text>
+                  <text x="114" y="60">CPI LA W1</text>
+                  <text x="114" y="81">MXUERATE EZS W1</text>
+                  <text x="114" y="102">MXUERATE LA W1</text>
+                  <text x="114" y="123">IPLAST LA W1</text>
+                  <text x="114" y="144">NAPMNMI EZS W1</text>
+                  <text x="114" y="165">MXCP EZS W1</text>
+                  <text x="114" y="186">MXCCLAST EZS W1</text>
+                  <text x="114" y="207">NAPMPMI LA W1</text>
+                  <text x="114" y="228">CPIX LA W1</text>
+                </g>
+                <g fill="#145c72">
+                  <rect x="120" y="28" width="372" height="12" rx="2"/>
+                  <rect x="120" y="49" width="320" height="12" rx="2"/>
+                  <rect x="120" y="70" width="204" height="12" rx="2"/>
+                  <rect x="120" y="91" width="181" height="12" rx="2"/>
+                  <rect x="120" y="112" width="171" height="12" rx="2"/>
+                  <rect x="120" y="133" width="126" height="12" rx="2"/>
+                  <rect x="120" y="154" width="125" height="12" rx="2"/>
+                  <rect x="120" y="175" width="106" height="12" rx="2"/>
+                  <rect x="120" y="196" width="104" height="12" rx="2"/>
+                  <rect x="120" y="217" width="56" height="12" rx="2"/>
+                </g>
+              </svg>
+              <p class="chart-caption">The accepted set is sparse, with most gains concentrated in a small subset of higher-improvement cases.</p>
+            </div>
+            <div class="chart-card">
+              <h3>Global versus local differencing orders</h3>
+              <svg viewBox="0 0 520 280" width="100%" role="img" aria-label="Scatter plot comparing global and local differencing orders across accepted cases" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0" y="0" width="520" height="280" fill="#ffffff"/>
+                <line x1="64" y1="236" x2="476" y2="236" stroke="#bdb5aa"/>
+                <line x1="64" y1="236" x2="64" y2="24" stroke="#bdb5aa"/>
+                <line x1="64" y1="236" x2="476" y2="24" stroke="#d7d1c6" stroke-dasharray="4 4"/>
+                <g font-size="11" fill="#444">
+                  <text x="58" y="251">0.0</text><text x="138" y="251">0.2</text><text x="220" y="251">0.4</text><text x="302" y="251">0.6</text><text x="384" y="251">0.8</text><text x="466" y="251">1.0</text>
+                  <text x="34" y="240">0.0</text><text x="34" y="198">0.2</text><text x="34" y="156">0.4</text><text x="34" y="114">0.6</text><text x="34" y="72">0.8</text><text x="34" y="30">1.0</text>
+                  <text x="220" y="272">d_global</text>
+                  <text x="14" y="20" transform="rotate(-90 14,20)">d_local</text>
+                </g>
+                <g fill="#145c72" opacity="0.9">
+                  <circle cx="352" cy="35" r="6"/>
+                  <circle cx="85" cy="88" r="6"/>
+                  <circle cx="291" cy="236" r="6"/>
+                  <circle cx="64" cy="120" r="6"/>
+                  <circle cx="167" cy="194" r="6"/>
+                  <circle cx="229" cy="236" r="6"/>
+                  <circle cx="85" cy="183" r="6"/>
+                  <circle cx="332" cy="183" r="6"/>
+                  <circle cx="229" cy="215" r="6"/>
+                  <circle cx="291" cy="204" r="6"/>
+                </g>
+              </svg>
+              <p class="chart-caption">The sign of &Delta;d varies across accepted cases, indicating regime-specific changes rather than a single directional shift.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="interpretation">
+          <h2>Interpretation</h2>
+          <p>
+            The accepted set is heterogeneous in the sign of &Delta;d. Some windows require larger local differencing orders, while others require smaller ones, indicating that the persistence shift is regime-specific rather than directionally uniform across series.
+          </p>
+          <p>
+            The strongest accepted case in the audited output is NAPMPMI / Eurozone / EurozoneW3 with an out-of-sample MSE improvement of 0.6047, while the weakest passing case is CPIX / LatinAmerica / LatinAmericaW1 with an improvement of 0.0909.
+          </p>
+        </section>
+
+        <section id="method">
+          <h2>Method</h2>
+          <div class="grid-2">
+            <div class="box"><h3>1. Transformation</h3><p>Map raw series to an economically meaningful scale before differencing.</p></div>
+            <div class="box"><h3>2. Fixed-width FFD</h3><p>Apply fixed-width fractional differencing using recursive binomial weights over a public admissible grid.</p></div>
+            <div class="box"><h3>3. Admissibility</h3><p>Select the smallest admissible order for which the ADF criterion rejects non-stationarity at the public level.</p></div>
+            <div class="box"><h3>4. Regime validation</h3><p>Use exogenous break windows, a pre-regime baseline, sparse release timing, and a chronological regime split.</p></div>
+            <div class="box"><h3>5. Joint gate</h3><p>Require both sufficient out-of-sample improvement and a material shift in differencing order.</p></div>
+            <div class="box"><h3>6. Audit layer</h3><p>Return explicit failure reasons and compact reliability warnings for estimable cases.</p></div>
+          </div>
+        </section>
+
+        <section id="gates">
+          <h2>Gating logic</h2>
+          <p>
+            The segmentation label is determined by a joint quantitative rule. Admissibility via ADF defines feasible differencing orders, but acceptance depends on the out-of-sample comparison and the materiality threshold on &Delta;d.
+          </p>
+          <pre><code>SEGMENTED iff
+MSE_local &lt;= (1 - ETA) * MSE_global
+and
+|d_local - d_global| &gt;= TAU</code></pre>
+          <p>
+            Public defaults are ADF alpha = 5%, train split = 80%, minimum baseline length = 6, minimum train length = 8, minimum test length = 6, ETA = 0.05, and TAU = 0.05.
+          </p>
+        </section>
+
+        <section id="reliability">
+          <h2>Reliability logic</h2>
+          <p>
+            The public reliability layer is a compact warning system. It distinguishes stronger accepted cases from potentially fragile cases without claiming formal uncertainty quantification.
+          </p>
+          <div class="grid-2">
+            <div class="box">
+              <h3>boundary</h3>
+              <p>At least one estimated differencing order lies at the edge of the admissible public grid.</p>
+            </div>
+            <div class="box">
+              <h3>sample_bind</h3>
+              <p>The effective training or test support is at the public minimum floor imposed by the chronological split.</p>
+            </div>
+            <div class="box">
+              <h3>stability</h3>
+              <p>The implied persistence shift is large enough to warrant caution in interpretation.</p>
+            </div>
+          </div>
+          <p class="note">Note: this page describes only the reliability warnings generated by the public code.</p>
+        </section>
+
+        <section id="limitations">
+          <h2>Limitations</h2>
+          <ul>
+            <li>The page reports accepted empirical cases, not predictive generality across all macro series.</li>
+            <li>The public reliability layer is not formal uncertainty quantification.</li>
+            <li>The released code omits proprietary data, ingestion logic, and the full internal robustness stack.</li>
+            <li>The workflow uses predefined exogenous regimes rather than estimating endogenous breakpoints.</li>
+          </ul>
+        </section>
+
+        <section id="reproducibility">
+          <h2>Reproducibility</h2>
+          <p>
+            The public repository is reproducible at the level of methodological logic on user-supplied arrays, but it is not plug-and-run for arbitrary series names. Before calling <code>validate_regime(...)</code>, the user must register the series in <code>LEVEL_SERIES</code> or <code>LOG_SERIES</code> because the transformation layer depends on the public series registry.
+          </p>
+          <pre><code>import numpy as np
+import core_pipeline as cp
+
+cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
+# Alternatively, register the series in cp.LOG_SERIES if log transformation is appropriate.
+
+before = np.array([...], dtype=float)
+during = np.array([...], dtype=float)
+
+result = cp.validate_regime(
+    series_name="YOUR_SERIES",
+    before_values=before,
+    during_values=during,
+    pair_id="YOUR_SERIES|Window_1",
+)</code></pre>
+          <p>
+            For publication, replace or supplement these summary graphics with exported notebook figures such as the segmentation dashboard, the reliability-register figure, and one regime-window visualization if you choose to disclose them publicly.
+          </p>
+        </section>
+
+        <section id="repo-structure">
+          <h2>Repository structure</h2>
+          <pre><code>.
+├── README.md
+├── __init__.py
+├── core_pipeline.py
+├── algorithm.md
+└── portfolio/
+    └── index.html</code></pre>
+          <p>This structure matches the public release naming used on this page.</p>
+        </section>
+
+        <section id="links">
+          <h2>Links</h2>
+          <ul>
+            <li><a href="../README.md">README</a></li>
+            <li><a href="../core_pipeline.py">Public core pipeline</a></li>
+            <li><a href="../algorithm.md">Algorithm note</a></li>
+            <li><span class="repo-url">https://github.com/bgltn/ffd-regime-segmentation/blob/main/README.md
+  
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
