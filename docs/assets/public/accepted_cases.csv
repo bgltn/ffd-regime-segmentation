@@ -1,0 +1,11 @@
+series,break,window_id,n_train,n_test,d_global,d_local,delta_d,mse_improvement,reliability_flag
+NAPMPMI,Eurozone,EurozoneW3,8,6,0.7000,0.9500,0.2500,0.6047,boundary
+CPI,LatinAmerica,LatinAmericaW1,8,6,0.0500,0.7000,0.6500,0.5204,none
+MXUERATE,EurozoneSlowdown,EurozoneSlowdownW1,8,6,0.5500,0.0000,-0.5500,0.3313,boundary
+MXUERATE,LatinAmerica,LatinAmericaW1,8,6,0.0000,0.5500,0.5500,0.2940,boundary
+IPLAST,LatinAmerica,LatinAmericaW1,8,6,0.2500,0.2000,-0.0500,0.2764,none
+NAPMNMI,EurozoneSlowdown,EurozoneSlowdownW1,8,6,0.4000,0.0000,-0.4000,0.2035,boundary
+MXCP,EurozoneSlowdown,EurozoneSlowdownW1,8,6,0.0500,0.2500,0.2000,0.2018,none
+MXCCLAST,EurozoneSlowdown,EurozoneSlowdownW1,8,6,0.6500,0.2500,-0.4000,0.1708,none
+NAPMPMI,LatinAmerica,LatinAmericaW1,8,6,0.4000,0.1000,-0.3000,0.1668,none
+CPIX,LatinAmerica,LatinAmericaW1,8,6,0.5500,0.1500,-0.4000,0.0909,none
