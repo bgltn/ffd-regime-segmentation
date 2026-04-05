@@ -24,7 +24,7 @@ A `(series, regime-window)` pair is labelled **SEGMENTED** only if both conditio
 1. The local specification improves out-of-sample performance relative to the baseline specification by at least a minimum threshold.
 2. The change in admissible differencing order is large enough to be economically meaningful.
 
-Public defaults are provided for usability. Exact study calibration may differ and can be stated in the paper.
+Public defaults are provided for usability. 
 
 ## Public API
 
