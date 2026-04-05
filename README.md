@@ -1,7 +1,19 @@
 # FFD Regime Segmentation Pipeline
 
-Protected public methodology companion for a paper on fractionally differentiated regime segmentation of macroeconomic release series.
+Protected public methodology support for a study on fractionally differentiated regime segmentation of macroeconomic series.
 
+**Website:** https://bgltn.github.io/ffd-regime-segmentation/  
+**Algorithm specification:** https://bgltn.github.io/ffd-regime-segmentation/algorithm.html  
+**Released source code:** `src/core_pipeline.py`
+
+## How to read this repository
+
+This repository has three public layers.
+
+1. The website states the research question, scope, accepted empirical cases, and publication boundary.
+2. The algorithm specification states the released procedure in compact formal terms.
+3. The source code exposes the released implementation layer.
+   
 ## Overview
 
 This repository exposes the methodological core needed to understand and run an abstract version of the pipeline on user-supplied arrays, while intentionally omitting proprietary data, private ingestion logic, and the full internal robustness layer used in the research workflow.
