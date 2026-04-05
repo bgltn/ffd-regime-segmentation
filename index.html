@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FFD-Based Regime Segmentation</title>
+  <title>FFD Segmentation</title>
   <meta name="description" content="Public portfolio for accepted regime-shift cases in the audited FFD segmentation release.">
   <style>
     :root {
@@ -44,11 +44,17 @@
     .hero { padding: 10px 0 18px; }
     .eyebrow { font-size: 0.86rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
     h1, h2, h3 { line-height: 1.16; margin: 0 0 12px; }
-    h1 { font-size: clamp(2.2rem, 5vw, 4rem); max-width: 11ch; }
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      max-width: none;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
     h2 { font-size: clamp(1.3rem, 2vw, 1.7rem); }
     h3 { font-size: 1.02rem; }
     p { max-width: 76ch; margin: 0 0 12px; }
-    .lede { font-size: 1.06rem; }
+    .lede { font-size: 1.02rem; }
     .callout {
       margin: 20px 0; padding: 15px 17px; background: var(--surface);
       border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;
@@ -109,21 +115,21 @@
           <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M34.2 18.5L24.5 28.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
         </svg>
-        <div class="brand-text">Accepted cases </div>
+        <div class="brand-text">Accepted cases</div>
       </div>
     </header>
 
     <section class="hero" id="home">
       <p class="eyebrow">Research portfolio · protected public methodology companion</p>
-      <h1>FFD Segmentation Reliability </h1>
+      <h1>FFD Segmentation</h1>
       <p class="lede">
-        This repository documents a filtered set of ten empirically admissible regime-shift cases in which local fractional differencing suggest an improvevement on out-of-sample performance relative to a global benchmark, together with a compact reliability register.
+        This repository documents ten accepted regime-shift cases in which local fractional differencing improves out-of-sample performance relative to a global benchmark, together with a compact public reliability register.
       </p>
       <div class="callout">
         <p><strong>Main result.</strong> Out of 168 tested series-window pairs, only 10 passed the admissibility, out-of-sample, and segmentation gates.</p>
       </div>
       <p>
-        The portfolio is framed as a focused research set of accepted cases rather than as a production platform or a claim of any generality.
+        The portfolio is framed as a focused research set of accepted cases rather than as a production platform or a claim of general predictive validity.
       </p>
       <div class="quick-links" aria-label="Primary links">
         <a href="#results">Results</a>
@@ -131,9 +137,9 @@
         <a href="#method">Method</a>
         <a href="#reliability">Reliability</a>
         <a href="#reproducibility">Reproducibility</a>
-        <a href="../README.md">README</a>
-        <a href="../core_pipeline.py">Public core pipeline</a>
-        <a href="../algorithm.md">Algorithm note</a>
+        <a href="README.md">README</a>
+        <a href="core_pipeline.py">Public core pipeline</a>
+        <a href="algorithm.md">Algorithm note</a>
       </div>
     </section>
 
@@ -375,19 +381,18 @@ result = cp.validate_regime(
 ├── __init__.py
 ├── core_pipeline.py
 ├── algorithm.md
-└── portfolio/
-    └── index.html</code></pre>
-          <p>This structure matches the public release naming used on this page.</p>
+└── index.html</code></pre>
+          <p>This structure matches root-level GitHub Pages deployment.</p>
         </section>
 
         <section id="links">
           <h2>Links</h2>
           <ul>
-            <li><a href="../README.md">README</a></li>
-            <li><a href="../core_pipeline.py">Public core pipeline</a></li>
-            <li><a href="../algorithm.md">Algorithm note</a></li>
-            <li><span class="repo-url">https://github.com/bgltn/ffd-regime-segmentation/blob/main/README.md
-  
+            <li><a href="README.md">README</a></li>
+            <li><a href="core_pipeline.py">Public core pipeline</a></li>
+            <li><a href="algorithm.md">Algorithm note</a></li>
+            <li><a href="https://github.com/bgltn/ffd-regime-segmentation" target="_blank" rel="noopener noreferrer">GitHub repository</a></li>
+          </ul>
         </section>
       </main>
     </div>
