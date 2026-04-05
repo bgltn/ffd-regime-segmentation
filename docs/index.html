@@ -1,12 +1,14 @@
 ```html
+<!-- docs/index.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FFD Regime Segmentation</title>
-  <meta name="description" content="Protected public methodology companion for FFD-based regime segmentation of macroeconomic release series.">
-
+  <title>Fractional Difference Regime Segmentation</title>
+  <meta name="description"
+    content="Protected public methodology companion for confirmation of regime-conditional fractional differencing under exogenous macro break windows.">
   <style>
     :root {
       --bg: #faf8f4;
@@ -17,12 +19,17 @@
       --border: #ddd7cc;
       --accent: #145c72;
       --radius: 12px;
-      --shadow: 0 8px 28px rgba(31, 26, 19, 0.05);
+      --shadow: 0 8px 28px rgba(31, 26, 19, .05);
       --content: 1120px;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
 
     body {
       margin: 0;
@@ -36,15 +43,17 @@
 
     a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: none
     }
 
-    a:hover { text-decoration: underline; }
+    a:hover {
+      text-decoration: underline
+    }
 
     .wrap {
       max-width: var(--content);
       margin: 0 auto;
-      padding: 28px 20px 72px;
+      padding: 28px 20px 72px
     }
 
     .topbar {
@@ -54,87 +63,111 @@
       gap: 16px;
       padding: 14px 0;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
+      margin-bottom: 24px
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 12px;
-      min-width: 0;
+      min-width: 0
     }
 
     .logo {
       width: 34px;
       height: 34px;
       color: var(--accent);
-      flex: 0 0 auto;
+      flex: 0 0 auto
     }
 
     .brand-text {
-      font-size: 0.95rem;
+      font-size: .95rem;
       color: var(--muted);
-      letter-spacing: 0.02em;
+      letter-spacing: .02em
     }
 
-    .hero {
-      padding: 10px 0 18px;
-    }
-
-    .eyebrow {
-      font-size: 0.86rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 0 0 10px;
-    }
-
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       line-height: 1.16;
-      margin: 0 0 12px;
+      margin: 0 0 12px
     }
 
     h1 {
-      font-size: clamp(1.75rem, 3vw, 2.55rem);
+      font-size: clamp(1.95rem, 3vw, 2.85rem);
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 600;
-      letter-spacing: -0.02em;
+      letter-spacing: -.02em
     }
 
     h2 {
-      font-size: clamp(1.28rem, 2vw, 1.72rem);
+      font-size: clamp(1.26rem, 2vw, 1.7rem)
     }
 
     h3 {
-      font-size: 1.02rem;
+      font-size: 1.02rem
     }
 
     p {
       max-width: 78ch;
-      margin: 0 0 12px;
+      margin: 0 0 12px
+    }
+
+    .eyebrow {
+      font-size: .86rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin: 0 0 10px
     }
 
     .lede {
-      font-size: 1.02rem;
+      font-size: 1.04rem;
+      max-width: 76ch
+    }
+
+    .hero {
+      padding: 6px 0 8px;
+      margin-bottom: 18px
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .85fr;
+      gap: 18px;
+      margin-top: 18px
+    }
+
+    .hero-card,
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow)
+    }
+
+    .hero-card {
+      padding: 18px 18px 20px
+    }
+
+    section {
+      padding: 22px 22px 24px
     }
 
     .callout {
-      margin: 20px 0;
-      padding: 15px 17px;
-      background: var(--surface);
+      margin-top: 14px;
+      padding: 14px 15px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
       border-left: 4px solid var(--accent);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      box-shadow: var(--shadow);
-      border-top: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      border-radius: 10px
     }
 
     .quick-links {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 16px
     }
 
     .quick-links a {
@@ -142,64 +175,84 @@
       background: var(--surface);
       padding: 8px 12px;
       border-radius: 999px;
-      font-size: 0.95rem;
+      font-size: .95rem
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 10px
+    }
+
+    .metric {
+      padding: 12px 12px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2)
+    }
+
+    .metric .value {
+      display: block;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 6px
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: .92rem
     }
 
     .layout {
       display: grid;
       grid-template-columns: 220px 1fr;
       gap: 34px;
-      margin-top: 24px;
+      margin-top: 20px
     }
 
     .side {
       position: sticky;
       top: 16px;
-      align-self: start;
+      align-self: start
     }
 
     .side nav {
       display: grid;
-      gap: 8px;
+      gap: 8px
     }
 
     .side a {
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: .95rem
     }
 
     .content {
       display: grid;
-      gap: 18px;
-    }
-
-    section {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px 22px 24px;
-      box-shadow: var(--shadow);
+      gap: 18px
     }
 
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
-      margin-top: 10px;
+      margin-top: 10px
     }
 
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
-      margin-top: 10px;
+      margin-top: 10px
     }
 
     .box {
       border: 1px solid var(--border);
       background: var(--surface-2);
       border-radius: 10px;
-      padding: 14px;
+      padding: 14px
     }
 
     .step-num {
@@ -209,32 +262,56 @@
       border-radius: 999px;
       background: var(--surface);
       border: 1px solid var(--border);
-      font-size: 0.84rem;
+      font-size: .84rem;
       color: var(--muted);
-      margin-bottom: 8px;
+      margin-bottom: 8px
     }
 
     .table-wrap {
       overflow-x: auto;
-      margin-top: 14px;
+      margin-top: 14px
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       min-width: 860px;
-      font-size: 0.95rem;
+      font-size: .95rem
     }
 
-    th, td {
+    th,
+    td {
       text-align: left;
       vertical-align: top;
       padding: 11px 10px;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border)
     }
 
     th {
+      background: var(--surface-2)
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 14px
+    }
+
+    .figure-card {
+      border: 1px solid var(--border);
       background: var(--surface-2);
+      border-radius: 10px;
+      padding: 14px
+    }
+
+    .figure-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff
     }
 
     pre {
@@ -244,95 +321,55 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--surface-2);
-      font-size: 0.92rem;
-      line-height: 1.5;
+      font-size: .92rem;
+      line-height: 1.5
     }
 
     code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
     }
 
-    .workflow {
-      display: grid;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .workflow .row {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 12px;
-      align-items: start;
-      padding: 10px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .workflow .row:first-child {
-      border-top: 0;
-      padding-top: 0;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      font-size: 0.83rem;
-      color: var(--muted);
-      margin-right: 6px;
-      margin-bottom: 6px;
-    }
-
-    .figure-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 14px;
-    }
-
-    .figure-card {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      border-radius: 10px;
-      padding: 14px;
-    }
-
-    .figure-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #fff;
-    }
-
-    .chart-caption,
+    .muted,
     .note,
-    .muted {
+    .chart-caption {
       color: var(--muted);
-      font-size: 0.93rem;
+      font-size: .93rem
     }
 
     ul {
       margin: 0;
-      padding-left: 1.2rem;
+      padding-left: 1.2rem
     }
 
     li {
-      margin-bottom: 8px;
+      margin-bottom: 8px
     }
 
-    @media (max-width: 920px) {
-      .layout { grid-template-columns: 1fr; }
-      .side { position: static; }
-      .grid-2, .grid-3, .figure-grid { grid-template-columns: 1fr; }
-      .workflow .row { grid-template-columns: 1fr; }
+    @media (max-width:920px) {
+
+      .hero-grid,
+      .layout,
+      .grid-2,
+      .grid-3,
+      .metric-grid,
+      .figure-grid {
+        grid-template-columns: 1fr
+      }
+
+      .side {
+        position: static
+      }
     }
 
-    @media (max-width: 560px) {
-      .wrap { padding: 20px 14px 56px; }
-      section { padding: 18px 16px 20px; }
+    @media (max-width:560px) {
+      .wrap {
+        padding: 20px 14px 56px
+      }
+
+      section,
+      .hero-card {
+        padding: 18px 16px 20px
+      }
     }
   </style>
 </head>
@@ -342,10 +379,14 @@
 
     <header class="topbar">
       <div class="brand">
-        <svg class="logo" viewBox="0 0 48 48" aria-label="Stylized logo mark" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="logo" viewBox="0 0 48 48" aria-label="Stylized logo mark" fill="none"
+          xmlns="http://www.w3.org/2000/svg">
           <rect x="6" y="6" width="36" height="36" rx="10" stroke="currentColor" stroke-width="2.2" />
-          <path d="M15 30.5C17.2 33 20 34 23 34C27.6 34 30.5 31.8 30.5 28.8C30.5 26.4 28.9 24.9 24.6 23.8L22 23.1C18.5 22.2 16.7 20.7 16.7 18.2C16.7 14.8 19.9 12.4 24.4 12.4C27.2 12.4 29.8 13.1 32 14.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
-          <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M15 30.5C17.2 33 20 34 23 34C27.6 34 30.5 31.8 30.5 28.8C30.5 26.4 28.9 24.9 24.6 23.8L22 23.1C18.5 22.2 16.7 20.7 16.7 18.2C16.7 14.8 19.9 12.4 24.4 12.4C27.2 12.4 29.8 13.1 32 14.9"
+            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round" />
           <path d="M34.2 18.5L24.5 28.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
         </svg>
         <div class="brand-text">Protected public methodology companion</div>
@@ -353,81 +394,86 @@
     </header>
 
     <section class="hero" id="home">
-      <p class="eyebrow">Research portfolio · FFD-based regime segmentation</p>
-      <h1>FFD Regime Segmentation</h1>
+      <p class="eyebrow">Confirmation pipeline · exogenous break regimes</p>
+      <h1>Fractional Difference Regime Segmentation</h1>
 
       <p class="lede">
-        This site presents the released methodological core of a regime-conditional
-        fractional differencing pipeline for macroeconomic release series.
-      </p>
-
-      <p>
-        The research question is whether the minimal admissible differencing order
-        remains stable across exogenously defined regime windows, or whether a
-        regime-specific estimate reduces out-of-sample loss under a causal split.
+        Macroeconomic time series combine weak signal, structural breaks, and persistent dependence.
+        Integer differencing can impose stationarity but erase long-range dependence.
+        Level specifications preserve memory but violate stationarity-based inference.
+        The confirmation question is whether the minimal admissible fractional differencing order
+        d* remains stable across exogenous macro regimes.
       </p>
 
       <div class="callout">
         <p>
-          <strong>Released empirical result.</strong> Out of 168 tested series-window pairs,
-          10 passed the admissibility, out-of-sample, and segmentation gates used in the public layer.
+          <strong>Confirmation pipeline for exogenous break regimes.</strong><br>
+          Operator fractional difference segmentation across exogenous regimes using fundamental variables.<br>
+          All results and reliability diagnostics refer to data processed and exported in April 2026,
+          authored and curated by T. Niero.
         </p>
       </div>
 
-      <p>
-        This publication is a protected public methodology companion. It presents the
-        research question, the released procedure, selected accepted empirical cases,
-        and the publication boundary. It does not reproduce the private research
-        system end to end.
-      </p>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h3>Central question</h3>
+          <p>
+            Does d* estimated on pre-regime data generalise to future observations within each
+            exogenous macro regime? If not, does a regime-local estimate reduce out-of-sample
+            generalisation error relative to the global estimate?
+          </p>
 
-      <div class="quick-links" aria-label="Primary links">
-        <a href="#how-to-read">How to read</a>
-        <a href="#question">Question</a>
-        <a href="#implementation">Implementation</a>
-        <a href="#study-frame">Study frame</a>
-        <a href="#worked-case">Worked case</a>
-        <a href="#results">Accepted cases</a>
-        <a href="#case-notes">Case notes</a>
-        <a href="#figures">Summary figures</a>
-        <a href="#tradeoff">OOS and memory preservation</a>
-        <a href="#implications">Implications</a>
-        <a href="#reliability">Reliability</a>
-        <a href="#boundary">Publication boundary</a>
-        <a href="#reproducibility">Reproducibility</a>
-        <a href="https://github.com/bgltn/ffd-regime-segmentation" target="_blank" rel="noopener noreferrer">Repository</a>
-        <a href="https://github.com/bgltn/ffd-regime-segmentation/blob/main/README.md" target="_blank" rel="noopener noreferrer">README</a>
-        <a href="algorithm.html">Algorithm specification</a>
-        <a href="https://github.com/bgltn/ffd-regime-segmentation/tree/main/src" target="_blank" rel="noopener noreferrer">Released source code</a>
-      </div>
-    </section>
+          <div class="callout">
+            <p>
+              <strong>Core comparison.</strong>
+              Δd = d*<sub>local</sub> − d*<sub>global</sub><br>
+              Δd &gt; 0: local regime requires more differencing.<br>
+              Δd &lt; 0: local regime requires less differencing.<br>
+              Smaller d implies greater memory preservation under fractional differencing.
+            </p>
+          </div>
 
-    <section id="how-to-read">
-      <h2>How to read this publication</h2>
-      <p>
-        This publication has three public layers. The website states the research question,
-        scope, accepted empirical cases, and publication boundary. The algorithm
-        specification states the released procedure in compact formal terms. The source
-        code exposes the released implementation layer.
-      </p>
-
-      <div class="grid-3">
-        <div class="box">
-          <div class="step-num">1</div>
-          <h3>Start with this page</h3>
-          <p>Read the research question, scope, empirical summary, and publication boundary.</p>
+          <div class="quick-links" aria-label="Primary links">
+            <a href="#question">Question</a>
+            <a href="#frame">Regime design</a>
+            <a href="#implementation">Implementation</a>
+            <a href="#results">10 confirmed pairs</a>
+            <a href="#figures">Figures</a>
+            <a href="#boundary">Boundary</a>
+            <a href="algorithm.html">Algorithm specification</a>
+            <a href="https://github.com/bgltn/ffd-regime-segmentation" target="_blank"
+              rel="noopener noreferrer">Repository</a>
+          </div>
         </div>
 
-        <div class="box">
-          <div class="step-num">2</div>
-          <h3>Read the formal procedure</h3>
-          <p>Open the algorithm specification for the released pipeline in compact form.</p>
-        </div>
-
-        <div class="box">
-          <div class="step-num">3</div>
-          <h3>Inspect the implementation</h3>
-          <p>Use the public source code to inspect the released API and decision logic.</p>
+        <div class="hero-card">
+          <h3>Public study frame</h3>
+          <div class="metric-grid">
+            <div class="metric">
+              <span class="value">2009-06-09</span>
+              <span class="label">analysis start</span>
+            </div>
+            <div class="metric">
+              <span class="value">2019-07-25</span>
+              <span class="label">analysis end</span>
+            </div>
+            <div class="metric">
+              <span class="value">49</span>
+              <span class="label">macroeconomic series</span>
+            </div>
+            <div class="metric">
+              <span class="value">14</span>
+              <span class="label">exogenous windows</span>
+            </div>
+            <div class="metric">
+              <span class="value">10</span>
+              <span class="label">confirmed segmented pairs</span>
+            </div>
+            <div class="metric">
+              <span class="value">AR(2)</span>
+              <span class="label">out-of-sample check</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -435,22 +481,17 @@
     <div class="layout">
       <aside class="side">
         <nav aria-label="Section navigation">
-          <a href="#how-to-read">How to read</a>
-          <a href="#question">Question and scope</a>
+          <a href="#question">Empirical question</a>
+          <a href="#frame">Regime design</a>
           <a href="#implementation">Released implementation</a>
-          <a href="#study-frame">Study frame</a>
-          <a href="#worked-case">Worked example</a>
-          <a href="#results">Accepted empirical cases</a>
-          <a href="#case-notes">Accepted case notes</a>
+          <a href="#gates">Decision gate</a>
+          <a href="#results">10 confirmed pairs</a>
+          <a href="#case-notes">Case notes</a>
           <a href="#figures">Summary figures</a>
-          <a href="#tradeoff">OOS and memory preservation</a>
-          <a href="#implications">Implications</a>
-          <a href="#gates">Decision rule</a>
-          <a href="#reliability">Reliability logic</a>
+          <a href="#implications">Conclusion</a>
+          <a href="#reliability">Reliability</a>
           <a href="#boundary">Publication boundary</a>
-          <a href="#limitations">Limitations</a>
           <a href="#reproducibility">Reproducibility</a>
-          <a href="#repo-structure">Repository structure</a>
           <a href="#links">Links</a>
         </nav>
       </aside>
@@ -458,161 +499,93 @@
       <main class="content">
 
         <section id="question">
-          <h2>Question and scope</h2>
+          <h2>Empirical question</h2>
           <p>
-            The research question is narrow by design. For each predefined regime window,
-            the framework asks whether a regime-specific admissible differencing order
-            improves out-of-sample performance relative to a baseline order estimated from
-            pre-regime history.
+            Given a known regime change at time T<sub>R</sub>, does the data-generating process
+            of a macroeconomic series require a different long-memory parameter to achieve the
+            same admissible level of stationarity and out-of-sample generalisation inside the
+            regime as outside it?
           </p>
           <p>
-            The release is limited to the methodological core when applied to externally
-            provided arrays, selected accepted empirical cases, and a compact audit layer.
-            It is not a production platform, not a full replication package, and not a claim
-            of predictive generality across all macroeconomic release series.
+            If d* is invariant, persistence is structurally stable across the regime boundary.
+            If d* differs, persistence is itself regime-dependent.
+          </p>
+        </section>
+
+        <section id="frame">
+          <h2>Regime design</h2>
+          <p>
+            Regime boundaries are not inferred from the series. They are specified a priori
+            from documented economic events and institutional changes and treated as part of
+            the data-generating process.
+          </p>
+          <p>
+            This separation avoids circularity between regime detection and regime confirmation.
+            All series are used in point-in-time form: the baseline is strictly pre-window,
+            there is no forward fill, and right-censored windows at the analysis horizon are
+            explicitly flagged.
           </p>
         </section>
 
         <section id="implementation">
           <h2>Released implementation</h2>
-          <p>
-            The released implementation contains the public decision logic in six stages.
-            The sequence below mirrors the methodological structure of the repository.
-          </p>
-
           <div class="grid-3">
             <div class="box">
               <div class="step-num">Stage 1</div>
               <h3>Transformation</h3>
-              <p>Map the raw series to the released level or log scale before differencing.</p>
+              <p>Map the raw series to the released level or log scale.</p>
             </div>
-
             <div class="box">
               <div class="step-num">Stage 2</div>
-              <h3>Fixed-width FFD</h3>
-              <p>Apply truncated fractional differencing on the released admissible grid.</p>
+              <h3>Fractional differencing grid</h3>
+              <p>Apply fixed-width fractional differencing over the released admissible grid.</p>
             </div>
-
             <div class="box">
               <div class="step-num">Stage 3</div>
               <h3>Admissibility</h3>
-              <p>Select the smallest admissible order satisfying the released ADF rule.</p>
+              <p>Select the smallest d that satisfies the released ADF stationarity rule on each sample.</p>
             </div>
-
             <div class="box">
               <div class="step-num">Stage 4</div>
               <h3>Chronological validation</h3>
-              <p>Compare baseline and local specifications under a causal regime split.</p>
+              <p>Compare global and local transformed series using a causal split and an AR(2) out-of-sample check.</p>
             </div>
-
             <div class="box">
               <div class="step-num">Stage 5</div>
               <h3>Decision</h3>
-              <p>Require both predictive gain and a material shift in admissible differencing order.</p>
+              <p>Require both predictive relevance and material separation in the memory parameter.</p>
             </div>
-
             <div class="box">
               <div class="step-num">Stage 6</div>
               <h3>Audit</h3>
-              <p>Return explicit failure reasons and compact reliability warnings.</p>
+              <p>Return compact reliability warnings and explicit failure reasons.</p>
             </div>
           </div>
         </section>
 
-        <section id="study-frame">
-          <h2>Study frame</h2>
+        <section id="gates">
+          <h2>Decision gate</h2>
           <p>
-            Public analysis period: <strong>[INSERT START DATE]</strong> to
-            <strong>[INSERT END DATE]</strong>.
+            A regime-local estimate d*<sub>local</sub> is judged superior to the global estimate
+            d*<sub>global</sub> only when both conditions hold jointly.
           </p>
+          <ul>
+            <li>MSE<sub>local</sub> ≤ (1 − η) · MSE<sub>global</sub></li>
+            <li>|Δd| ≥ τ</li>
+          </ul>
           <p>
-            Macroeconomic release observations are sparse. Regime windows are therefore
-            evaluated only when the release count is sufficient to satisfy the released
-            minimum support requirements for baseline estimation, regime training, and
-            regime testing.
+            The released thresholds are η = 0.05 and τ = 0.05.
+            This dual gate enforces predictive relevance and substantive separation in the
+            memory parameter.
           </p>
-        </section>
-
-        <section id="worked-case">
-          <h2>Worked example</h2>
-          <p>
-            One regime-window pair is processed through the same released stages used by
-            the implementation. The purpose of this section is to show the mechanics of the
-            procedure, not to disclose private data.
-          </p>
-
-          <div class="workflow">
-            <div class="row">
-              <div><span class="tag">Input</span></div>
-              <div>
-                The public API accepts two input arrays:
-                <code>before_values</code> for the pre-regime baseline and
-                <code>during_values</code> for the regime window.
-              </div>
-            </div>
-
-            <div class="row">
-              <div><span class="tag">Transformation</span></div>
-              <div>
-                The series is mapped to the released level or log scale according to the
-                public registry logic.
-              </div>
-            </div>
-
-            <div class="row">
-              <div><span class="tag">FFD grid</span></div>
-              <div>
-                Fixed-width fractional differences are computed over the released admissible
-                grid. Each candidate order is tested only within the released gate structure.
-              </div>
-            </div>
-
-            <div class="row">
-              <div><span class="tag">Admissible orders</span></div>
-              <div>
-                The implementation selects the smallest admissible baseline order and the
-                smallest admissible local order under the released ADF rule.
-              </div>
-            </div>
-
-            <div class="row">
-              <div><span class="tag">Validation</span></div>
-              <div>
-                A chronological split compares the local and baseline transformed series out
-                of sample. The released comparison metric is mean squared error.
-              </div>
-            </div>
-
-            <div class="row">
-              <div><span class="tag">Decision</span></div>
-              <div>
-                The pair is labelled <code>SEGMENTED</code> only if the regime-specific
-                specification delivers sufficient out-of-sample improvement and the shift in
-                admissible differencing order is materially non-zero.
-              </div>
-            </div>
-          </div>
-
-          <pre><code>{
-  "pair_id": "YOUR_SERIES|Window_1",
-  "label": "SEGMENTED",
-  "d_global": 0.05,
-  "d_local": 0.70,
-  "delta_d": 0.65,
-  "mse_global": 0.1180,
-  "mse_local": 0.0566,
-  "mse_improvement": 0.5204,
-  "reliability_flag": "none"
-}</code></pre>
         </section>
 
         <section id="results">
-          <h2>Accepted empirical cases</h2>
+          <h2>Confirmed segmented pairs</h2>
           <p>
-            Out of 168 tested series-window pairs, 10 satisfied the public admissibility,
-            out-of-sample, and segmentation criteria.
+            This public layer focuses only on the 10 pairs that satisfy the released
+            admissibility and confirmation gate.
           </p>
-
           <div class="table-wrap">
             <table>
               <thead>
@@ -624,202 +597,243 @@
                   <th>Ntest</th>
                   <th>d<sub>global</sub></th>
                   <th>d<sub>local</sub></th>
-                  <th>&Delta;d</th>
+                  <th>Δd</th>
                   <th>MSE improvement</th>
                   <th>Reliability flag</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>NAPMPMI</td><td>Eurozone</td><td>EurozoneW3</td><td>8</td><td>6</td><td>0.7000</td><td>0.9500</td><td>0.2500</td><td>0.6047</td><td>boundary</td></tr>
-                <tr><td>CPI</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.0500</td><td>0.7000</td><td>0.6500</td><td>0.5204</td><td>none</td></tr>
-                <tr><td>MXUERATE</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.5500</td><td>0.0000</td><td>-0.5500</td><td>0.3313</td><td>boundary</td></tr>
-                <tr><td>MXUERATE</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.0000</td><td>0.5500</td><td>0.5500</td><td>0.2940</td><td>boundary</td></tr>
-                <tr><td>IPLAST</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.2500</td><td>0.2000</td><td>-0.0500</td><td>0.2764</td><td>none</td></tr>
-                <tr><td>NAPMNMI</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.4000</td><td>0.0000</td><td>-0.4000</td><td>0.2035</td><td>boundary</td></tr>
-                <tr><td>MXCP</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.0500</td><td>0.2500</td><td>0.2000</td><td>0.2018</td><td>none</td></tr>
-                <tr><td>MXCCLAST</td><td>EurozoneSlowdown</td><td>EurozoneSlowdownW1</td><td>8</td><td>6</td><td>0.6500</td><td>0.2500</td><td>-0.4000</td><td>0.1708</td><td>none</td></tr>
-                <tr><td>NAPMPMI</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.4000</td><td>0.1000</td><td>-0.3000</td><td>0.1668</td><td>none</td></tr>
-                <tr><td>CPIX</td><td>LatinAmerica</td><td>LatinAmericaW1</td><td>8</td><td>6</td><td>0.5500</td><td>0.1500</td><td>-0.4000</td><td>0.0909</td><td>none</td></tr>
+                <tr>
+                  <td>NAPMPMI</td>
+                  <td>Eurozone</td>
+                  <td>EurozoneW3</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.7000</td>
+                  <td>0.9500</td>
+                  <td>0.2500</td>
+                  <td>0.6047</td>
+                  <td>boundary</td>
+                </tr>
+                <tr>
+                  <td>CPI</td>
+                  <td>LatinAmerica</td>
+                  <td>LatinAmericaW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.0500</td>
+                  <td>0.7000</td>
+                  <td>0.6500</td>
+                  <td>0.5204</td>
+                  <td>none</td>
+                </tr>
+                <tr>
+                  <td>MXUERATE</td>
+                  <td>EurozoneSlowdown</td>
+                  <td>EurozoneSlowdownW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.5500</td>
+                  <td>0.0000</td>
+                  <td>-0.5500</td>
+                  <td>0.3313</td>
+                  <td>boundary</td>
+                </tr>
+                <tr>
+                  <td>MXUERATE</td>
+                  <td>LatinAmerica</td>
+                  <td>LatinAmericaW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.0000</td>
+                  <td>0.5500</td>
+                  <td>0.5500</td>
+                  <td>0.2940</td>
+                  <td>boundary</td>
+                </tr>
+                <tr>
+                  <td>IPLAST</td>
+                  <td>LatinAmerica</td>
+                  <td>LatinAmericaW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.2500</td>
+                  <td>0.2000</td>
+                  <td>-0.0500</td>
+                  <td>0.2764</td>
+                  <td>none</td>
+                </tr>
+                <tr>
+                  <td>NAPMNMI</td>
+                  <td>EurozoneSlowdown</td>
+                  <td>EurozoneSlowdownW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.4000</td>
+                  <td>0.0000</td>
+                  <td>-0.4000</td>
+                  <td>0.2035</td>
+                  <td>boundary</td>
+                </tr>
+                <tr>
+                  <td>MXCP</td>
+                  <td>EurozoneSlowdown</td>
+                  <td>EurozoneSlowdownW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.0500</td>
+                  <td>0.2500</td>
+                  <td>0.2000</td>
+                  <td>0.2018</td>
+                  <td>none</td>
+                </tr>
+                <tr>
+                  <td>MXCCLAST</td>
+                  <td>EurozoneSlowdown</td>
+                  <td>EurozoneSlowdownW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.6500</td>
+                  <td>0.2500</td>
+                  <td>-0.4000</td>
+                  <td>0.1708</td>
+                  <td>none</td>
+                </tr>
+                <tr>
+                  <td>NAPMPMI</td>
+                  <td>LatinAmerica</td>
+                  <td>LatinAmericaW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.4000</td>
+                  <td>0.1000</td>
+                  <td>-0.3000</td>
+                  <td>0.1668</td>
+                  <td>none</td>
+                </tr>
+                <tr>
+                  <td>CPIX</td>
+                  <td>LatinAmerica</td>
+                  <td>LatinAmericaW1</td>
+                  <td>8</td>
+                  <td>6</td>
+                  <td>0.5500</td>
+                  <td>0.1500</td>
+                  <td>-0.4000</td>
+                  <td>0.0909</td>
+                  <td>none</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </section>
 
         <section id="case-notes">
-          <h2>Accepted case notes</h2>
+          <h2>Case notes</h2>
           <ul>
-            <li><strong>NAPMPMI / Eurozone / EurozoneW3:</strong> the local admissible order rises from 0.70 to 0.95, with out-of-sample MSE improvement of 0.6047. The case passes with a boundary warning.</li>
-            <li><strong>CPI / LatinAmerica / LatinAmericaW1:</strong> the local admissible order rises from 0.05 to 0.70, with MSE improvement of 0.5204. This is a large upward shift without a public reliability warning.</li>
-            <li><strong>MXUERATE / EurozoneSlowdown / EurozoneSlowdownW1:</strong> the local admissible order falls from 0.55 to 0.00, with MSE improvement of 0.3313. The case passes with a boundary warning.</li>
-            <li><strong>MXUERATE / LatinAmerica / LatinAmericaW1:</strong> the local admissible order rises from 0.00 to 0.55, with MSE improvement of 0.2940. The case passes with a boundary warning.</li>
-            <li><strong>IPLAST / LatinAmerica / LatinAmericaW1:</strong> the local admissible order decreases slightly from 0.25 to 0.20, with MSE improvement of 0.2764. The shift is small but still passes the released threshold.</li>
-            <li><strong>NAPMNMI / EurozoneSlowdown / EurozoneSlowdownW1:</strong> the local admissible order falls from 0.40 to 0.00, with MSE improvement of 0.2035. The case passes with a boundary warning.</li>
-            <li><strong>MXCP / EurozoneSlowdown / EurozoneSlowdownW1:</strong> the local admissible order rises from 0.05 to 0.25, with MSE improvement of 0.2018 and no public warning.</li>
-            <li><strong>MXCCLAST / EurozoneSlowdown / EurozoneSlowdownW1:</strong> the local admissible order falls from 0.65 to 0.25, with MSE improvement of 0.1708 and no public warning.</li>
-            <li><strong>NAPMPMI / LatinAmerica / LatinAmericaW1:</strong> the local admissible order falls from 0.40 to 0.10, with MSE improvement of 0.1668 and no public warning.</li>
-            <li><strong>CPIX / LatinAmerica / LatinAmericaW1:</strong> the local admissible order falls from 0.55 to 0.15, with MSE improvement of 0.0909. This is the weakest passing case in the released set.</li>
+            <li><strong>NAPMPMI / Eurozone / EurozoneW3:</strong> local admissible order rises from 0.70 to 0.95, with
+              MSE improvement of 0.6047.</li>
+            <li><strong>CPI / LatinAmerica / LatinAmericaW1:</strong> local admissible order rises from 0.05 to 0.70,
+              with MSE improvement of 0.5204.</li>
+            <li><strong>MXUERATE / EurozoneSlowdown / EurozoneSlowdownW1:</strong> local admissible order falls from
+              0.55 to 0.00, with MSE improvement of 0.3313.</li>
+            <li><strong>MXUERATE / LatinAmerica / LatinAmericaW1:</strong> local admissible order rises from 0.00 to
+              0.55, with MSE improvement of 0.2940.</li>
+            <li><strong>IPLAST / LatinAmerica / LatinAmericaW1:</strong> local admissible order falls slightly from 0.25
+              to 0.20, with MSE improvement of 0.2764.</li>
+            <li><strong>NAPMNMI / EurozoneSlowdown / EurozoneSlowdownW1:</strong> local admissible order falls from 0.40
+              to 0.00, with MSE improvement of 0.2035.</li>
+            <li><strong>MXCP / EurozoneSlowdown / EurozoneSlowdownW1:</strong> local admissible order rises from 0.05 to
+              0.25, with MSE improvement of 0.2018.</li>
+            <li><strong>MXCCLAST / EurozoneSlowdown / EurozoneSlowdownW1:</strong> local admissible order falls from
+              0.65 to 0.25, with MSE improvement of 0.1708.</li>
+            <li><strong>NAPMPMI / LatinAmerica / LatinAmericaW1:</strong> local admissible order falls from 0.40 to
+              0.10, with MSE improvement of 0.1668.</li>
+            <li><strong>CPIX / LatinAmerica / LatinAmericaW1:</strong> local admissible order falls from 0.55 to 0.15,
+              with MSE improvement of 0.0909.</li>
           </ul>
         </section>
 
         <section id="figures">
           <h2>Summary figures</h2>
-          <p>
-            These figures are exported from the released empirical summary rather than
-            drawn manually in the page. That prevents visual scale drift and keeps the
-            plot geometry consistent with the underlying data.
-          </p>
-
           <div class="figure-grid">
             <div class="figure-card">
-              <h3>Out-of-sample MSE improvement across accepted cases</h3>
-              <img src="assets/figures/mse_improvement_accepted_cases.svg" alt="Bar chart of out-of-sample mean squared error improvement across the accepted cases">
-              <p class="chart-caption">
-                The accepted set is sparse, and the strongest gains are concentrated in a
-                smaller subset of cases.
-              </p>
+              <h3>Out-of-sample MSE improvement across confirmed pairs</h3>
+              <img src="assets/figures/mse_improvement_accepted_cases.svg"
+                alt="Bar chart of out-of-sample mean squared error improvement across confirmed segmented pairs">
+              <p class="chart-caption">Released confirmation set only.</p>
             </div>
-
             <div class="figure-card">
-              <h3>Baseline and regime-specific admissible orders</h3>
-              <img src="assets/figures/global_vs_local_d_accepted_cases.svg" alt="Scatter plot comparing baseline and regime-specific admissible differencing orders across accepted cases">
-              <p class="chart-caption">
-                The sign of the admissible shift varies across accepted cases, which is
-                consistent with regime-conditional persistence change rather than one
-                uniform directional adjustment.
-              </p>
+              <h3>Global and local admissible orders</h3>
+              <img src="assets/figures/global_vs_local_d_accepted_cases.svg"
+                alt="Scatter plot comparing global and local admissible differencing orders across confirmed segmented pairs">
+              <p class="chart-caption">Sign and magnitude of Δd vary across confirmed cases.</p>
             </div>
-          </div>
-        </section>
-
-        <section id="tradeoff">
-          <h2>Out-of-sample gain and memory preservation</h2>
-          <p>
-            The released decision rule requires predictive improvement and a material
-            shift in admissible differencing order. The figure below shows a separate
-            descriptive trade-off between out-of-sample gain and memory preservation
-            for 23 estimable pairs. Accepted cases are highlighted.
-          </p>
-
-          <div class="figure-card">
-            <h3>Trade-off across 23 estimable pairs</h3>
-            <img src="assets/figures/oos_vs_memory_preservation_23pairs.svg" alt="Scatter plot of out-of-sample mean squared error improvement against memory preservation across 23 estimable pairs">
-            <p class="chart-caption">
-              This plot is descriptive. It is intended to show how predictive gain and
-              preservation of low-frequency structure coexist across the estimable public
-              subset. It does not replace the released gate logic.
-            </p>
           </div>
         </section>
 
         <section id="implications">
-          <h2>Implications</h2>
+          <h2>Conclusion</h2>
           <p>
-            The accepted set does not support a uniform persistence adjustment across
-            regime windows. The sign and magnitude of the admissible shift vary across
-            accepted cases, which is consistent with regime-conditional memory structure
-            rather than a single stable global order.
-          </p>
-          <p>
-            The released evidence is methodological rather than universal. It shows that,
-            for a restricted subset of tested pairs, regime-specific admissible orders can
-            reduce out-of-sample loss under a causal split. It does not show that local
-            estimation dominates globally across all macroeconomic release series.
-          </p>
-          <p>
-            The practical implication is narrow: under sparse macroeconomic releases and
-            constrained regime length, segmentation may be justified only for a minority of
-            estimable cases, and only when predictive gain and memory change survive the
-            released gates jointly.
-          </p>
-        </section>
-
-        <section id="gates">
-          <h2>Decision rule</h2>
-          <p>
-            A pair is labelled <strong>SEGMENTED</strong> only when two conditions hold
-            at the same time.
+            The pipeline makes three contributions.
           </p>
           <ul>
-            <li>The regime-specific specification reduces out-of-sample mean squared error by at least 5 percent relative to the baseline specification.</li>
-            <li>The absolute difference between the regime-specific admissible order and the baseline admissible order is at least 0.05.</li>
+            <li><strong>Regime-conditional memory under exogenous breaks.</strong> Economic chronologies define
+              exogenous windows. The pipeline tests whether these windows are associated with changes in long-memory
+              behaviour that justify a regime-specific differencing order rather than a single global operator.</li>
+            <li><strong>Confirmation test for d-invariance.</strong> ADF defines the feasible region for d.
+              Out-of-sample generalisation error under a common AR(2) scoring rule is the validation functional. The
+              choice between global and local fractional differencing is therefore empirical and falsifiable.</li>
+            <li><strong>Structured diagnostic output.</strong> Regime-level tables and compact reliability flags show
+              where a local differencing order is beneficial, where it is fragile, and where the global operator remains
+              adequate.</li>
           </ul>
           <p>
-            If the predictive gain is smaller than 5 percent, the pair does not pass.
-            If the shift in admissible differencing order is smaller than 0.05, the pair
-            also does not pass.
+            For a non-trivial subset of macroeconomic series and regimes, regime-specific
+            fractional differencing yields lower out-of-sample error than a global
+            differencing order under the same stationarity constraint. For the remainder,
+            the global operator is sufficient. The result is conditional, not universal.
           </p>
         </section>
 
         <section id="reliability">
-          <h2>Reliability logic</h2>
-          <p>
-            The released reliability layer is a compact warning system. It separates
-            stronger accepted cases from potentially fragile accepted cases without
-            claiming formal uncertainty quantification.
-          </p>
-
+          <h2>Reliability</h2>
           <div class="grid-3">
             <div class="box">
               <h3>boundary</h3>
               <p>At least one estimated differencing order lies at the edge of the released admissible grid.</p>
             </div>
-
             <div class="box">
               <h3>sample_bind</h3>
-              <p>The effective training or test support is at the released minimum floor imposed by the chronological split.</p>
+              <p>The effective train or test support is at the released minimum floor.</p>
             </div>
-
             <div class="box">
               <h3>stability</h3>
-              <p>The implied persistence shift is large enough to warrant caution in interpretation.</p>
+              <p>The implied persistence shift is large enough to warrant caution.</p>
             </div>
           </div>
-
-          <p class="note">
-            This site describes only the compact reliability warnings generated by the released public layer.
-          </p>
         </section>
 
         <section id="boundary">
           <h2>Publication boundary</h2>
           <ul>
-            <li>Public: methodological core, released decision logic, selected accepted empirical cases, and compact reliability flags.</li>
-            <li>Omitted: proprietary data, private paths, internal notebook chains, private robustness infrastructure, and study-specific private registries.</li>
-            <li>Interpretation limit: accepted cases do not establish predictive generality across all macroeconomic release series.</li>
-          </ul>
-        </section>
-
-        <section id="limitations">
-          <h2>Limitations</h2>
-          <ul>
-            <li>The public site reports accepted empirical cases, not full discovery output.</li>
-            <li>The released reliability layer is not formal uncertainty quantification.</li>
-            <li>The workflow relies on predefined exogenous regime windows rather than estimating endogenous breakpoints.</li>
-            <li>The released code is a methodological companion, not the private research system end to end.</li>
-            <li>Macroeconomic release observations are sparse. Regime windows are therefore constrained by minimum baseline, training, and test support requirements so that the resulting comparison remains quantitatively meaningful.</li>
-            <li>Because admissibility and out-of-sample validation both require sufficient release support, some economically relevant regime periods may be too short to be evaluated within the released gate structure.</li>
-            <li>The public analysis period must be read together with these support constraints, because the feasible evaluation set depends on both calendar span and release density.</li>
+            <li>Public: methodological core, released decision logic, confirmed segmented pairs, and compact reliability
+              flags.</li>
+            <li>Omitted: proprietary data, private paths, internal notebook chains, private robustness infrastructure,
+              and private registries.</li>
+            <li>Interpretation limit: confirmed cases do not establish predictive generality across all macroeconomic
+              release series.</li>
           </ul>
         </section>
 
         <section id="reproducibility">
           <h2>Reproducibility</h2>
           <p>
-            The public repository is reproducible at the level of methodological logic
-            when applied to externally provided arrays. Repository-level source code
-            remains in the <code>src/</code> layer rather than inside the site directory.
+            The public repository is reproducible at the level of methodological logic when
+            applied to externally provided arrays.
           </p>
-
-          <p>
-            The public module is <code>src/core_pipeline.py</code>. The snippet below shows
-            how to import and call the released implementation on externally provided arrays.
-          </p>
-
           <pre><code>import numpy as np
 import src.core_pipeline as cp
-
-cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
-# Alternatively, register the series in cp.LOG_SERIES if log transformation is appropriate.
 
 before = np.array([...], dtype=float)
 during = np.array([...], dtype=float)
@@ -828,37 +842,20 @@ result = cp.validate_regime(
     series_name="YOUR_SERIES",
     before_values=before,
     during_values=during,
-    pair_id="YOUR_SERIES|Window_1",
+    pair_id="YOUR_SERIES|Window"
 )
 
 print(result)</code></pre>
         </section>
 
-        <section id="repo-structure">
-          <h2>Repository structure</h2>
-          <pre><code>.
-├── README.md
-├── src/
-│   └── core_pipeline.py
-├── docs/
-│   ├── index.html
-│   ├── algorithm.html
-│   └── assets/
-└── .gitignore</code></pre>
-
-          <p>
-            The website is published from <code>docs/</code>. Repository-level documentation
-            and source code remain outside the site layer and are linked through GitHub.
-          </p>
-        </section>
-
         <section id="links">
           <h2>Links</h2>
           <ul>
-            <li><a href="https://github.com/bgltn/ffd-regime-segmentation" target="_blank" rel="noopener noreferrer">GitHub repository</a></li>
-            <li><a href="https://github.com/bgltn/ffd-regime-segmentation/blob/main/README.md" target="_blank" rel="noopener noreferrer">README</a></li>
             <li><a href="algorithm.html">Algorithm specification</a></li>
-            <li><a href="https://github.com/bgltn/ffd-regime-segmentation/tree/main/src" target="_blank" rel="noopener noreferrer">Released source code</a></li>
+            <li><a href="https://github.com/bgltn/ffd-regime-segmentation" target="_blank"
+                rel="noopener noreferrer">GitHub repository</a></li>
+            <li><a href="https://github.com/bgltn/ffd-regime-segmentation/tree/main/src" target="_blank"
+                rel="noopener noreferrer">Released source code</a></li>
           </ul>
         </section>
 
@@ -866,5 +863,310 @@ print(result)</code></pre>
     </div>
   </div>
 </body>
+
+</html>
+```
+
+```html
+<!-- docs/algorithm.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithm Specification · Fractional Difference Regime Segmentation</title>
+  <meta name="description"
+    content="Released algorithm specification for confirmation of regime-conditional fractional differencing under exogenous break windows.">
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --surface-2: #f2eee7;
+      --text: #1b1915;
+      --muted: #666158;
+      --border: #ddd7cc;
+      --accent: #145c72;
+      --radius: 12px;
+      --shadow: 0 8px 28px rgba(31, 26, 19, .05);
+      --content: 980px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.62
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    .wrap {
+      max-width: var(--content);
+      margin: 0 auto;
+      padding: 28px 20px 72px
+    }
+
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 22px 24px;
+      margin-bottom: 18px
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.16;
+      margin: 0 0 12px
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 3vw, 2.55rem);
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      letter-spacing: -.02em
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 2vw, 1.55rem)
+    }
+
+    p {
+      margin: 0 0 12px;
+      max-width: 78ch
+    }
+
+    .eyebrow {
+      font-size: .86rem;
+      color: #666158;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin: 0 0 10px
+    }
+
+    .box {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 12px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .95rem
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    th {
+      background: var(--surface-2)
+    }
+
+    pre {
+      margin: 14px 0;
+      padding: 14px;
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      font-size: .92rem;
+      line-height: 1.5
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+    }
+
+    ol,
+    ul {
+      margin: 0;
+      padding-left: 1.2rem
+    }
+
+    li {
+      margin-bottom: 8px
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: .93rem
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <section>
+      <p class="eyebrow">Released algorithm specification</p>
+      <h1>Fractional Difference Regime Segmentation</h1>
+      <p>
+        Confirmation algorithm for exogenous break regimes. The released procedure tests
+        whether a pre-regime admissible fractional differencing order remains valid inside
+        a known macroeconomic regime window.
+      </p>
+    </section>
+
+    <section>
+      <h2>Notation</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>x_t</code></td>
+            <td>Observed macroeconomic release series in point-in-time form</td>
+          </tr>
+          <tr>
+            <td><code>D^d(x)</code></td>
+            <td>Fixed-width fractional difference of order <code>d</code></td>
+          </tr>
+          <tr>
+            <td><code>d*<sub>global</sub></code></td>
+            <td>Smallest admissible fractional differencing order estimated on pre-regime data</td>
+          </tr>
+          <tr>
+            <td><code>d*<sub>local</sub></code></td>
+            <td>Smallest admissible fractional differencing order estimated on the regime training sample</td>
+          </tr>
+          <tr>
+            <td><code>Δd</code></td>
+            <td><code>d*<sub>local</sub> − d*<sub>global</sub></code></td>
+          </tr>
+          <tr>
+            <td><code>MSE<sub>global</sub></code></td>
+            <td>Out-of-sample mean squared error under the global operator</td>
+          </tr>
+          <tr>
+            <td><code>MSE<sub>local</sub></code></td>
+            <td>Out-of-sample mean squared error under the local operator</td>
+          </tr>
+          <tr>
+            <td><code>η</code></td>
+            <td>Minimum out-of-sample improvement threshold; released value <code>0.05</code></td>
+          </tr>
+          <tr>
+            <td><code>τ</code></td>
+            <td>Minimum separation threshold for <code>|Δd|</code>; released value <code>0.05</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Regime design</h2>
+      <p>
+        Regime boundaries are exogenous. They are specified a priori from documented
+        economic events and institutional changes. They are not estimated from the series.
+      </p>
+      <p>
+        All samples are causal. The baseline is strictly pre-window. There is no forward fill.
+        Right-censored windows at the analysis horizon are flagged explicitly.
+      </p>
+    </section>
+
+    <section>
+      <h2>Released procedure</h2>
+      <ol>
+        <li>Choose a series <code>x_t</code> and an exogenous regime window <code>R = [T_R, T_E]</code>.</li>
+        <li>Construct the pre-regime baseline sample using observations strictly before <code>T_R</code>.</li>
+        <li>Split the regime window chronologically into a local training segment and a local test segment.</li>
+        <li>Map the series to the released level or log scale according to the public registry.</li>
+        <li>For each candidate <code>d</code> on the released admissible grid, compute <code>D^d(x)</code> using
+          fixed-width fractional differencing.</li>
+        <li>Apply the released ADF admissibility rule and select the smallest admissible order on the baseline sample.
+          This yields <code>d*<sub>global</sub></code>.</li>
+        <li>Apply the same rule on the regime training sample and select the smallest admissible order. This yields
+          <code>d*<sub>local</sub></code>.</li>
+        <li>Transform the regime data using both operators and evaluate out-of-sample performance with the released
+          AR(2) rolling scoring mechanism.</li>
+        <li>Compute <code>Δd = d*<sub>local</sub> − d*<sub>global</sub></code>.</li>
+        <li>Label the pair <code>SEGMENTED</code> only if both released gates hold jointly:
+          <ul>
+            <li><code>MSE<sub>local</sub> ≤ (1 − η) · MSE<sub>global</sub></code></li>
+            <li><code>|Δd| ≥ τ</code></li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Interpretation of Δd</h2>
+      <ul>
+        <li><code>Δd &gt; 0</code>: the regime requires more differencing than the baseline estimate.</li>
+        <li><code>Δd &lt; 0</code>: the regime requires less differencing than the baseline estimate.</li>
+        <li>Under fractional differencing, smaller <code>d</code> implies greater preservation of low-frequency
+          dependence.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Released output</h2>
+      <p>The released public layer returns a compact confirmation record of the form:</p>
+      <pre><code>{
+  "pair_id": "SERIES|Window",
+  "label": "SEGMENTED or GLOBAL",
+  "d_global": 0.00,
+  "d_local": 0.00,
+  "delta_d": 0.00,
+  "mse_global": 0.0000,
+  "mse_local": 0.0000,
+  "mse_improvement": 0.0000,
+  "reliability_flag": "none | boundary | sample_bind | stability"
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>Confirmation logic</h2>
+      <p>
+        The pipeline is not a break-detection algorithm. It is a confirmation test for
+        d-invariance under exogenous regime structure. ADF defines the feasible region
+        for admissible differencing. Out-of-sample generalisation error under a common
+        AR(2) scoring model determines whether the local operator is empirically justified.
+      </p>
+    </section>
+
+    <section>
+      <h2>Boundary of the public layer</h2>
+      <ul>
+        <li>Public: methodological core, released gates, selected confirmed pairs, and compact reliability logic.</li>
+        <li>Omitted: proprietary data, private paths, internal notebook chains, private robustness infrastructure, and
+          private registries.</li>
+        <li>This document specifies the released method only. It does not reproduce the private research system end to
+          end.</li>
+      </ul>
+      <p class="muted"><a href="index.html">Back to website</a></p>
+    </section>
+
+  </div>
+</body>
+
 </html>
 ```
