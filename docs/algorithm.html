@@ -1,10 +1,14 @@
+<!-- docs/algorithm.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Algorithm Specification — FFD Regime Segmentation</title>
-  <meta name="description" content="Algorithm specification for the FFD-based regime segmentation pipeline.">
+  <title>Algorithm Specification · Fractional Differencing Order under Exogenous Macroeconomic Regimes</title>
+  <meta name="description"
+    content="Released algorithm specification for confirmation of regime-conditional fractional differencing under exogenous break windows.">
+
   <style>
     :root {
       --bg: #faf8f4;
@@ -16,181 +20,306 @@
       --accent: #145c72;
       --radius: 12px;
       --shadow: 0 8px 28px rgba(31, 26, 19, 0.05);
-      --content: 860px;
+      --content: 980px;
     }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: var(--bg);
       color: var(--text);
       font-family: Georgia, "Times New Roman", serif;
       line-height: 1.62;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: var(--content); margin: 0 auto; padding: 28px 20px 72px; }
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
-      padding: 14px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px;
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
     }
-    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .logo { width: 34px; height: 34px; color: var(--accent); flex: 0 0 auto; }
-    .brand-text { font-size: 0.95rem; color: var(--muted); letter-spacing: 0.02em; }
-    h1, h2, h3 { line-height: 1.16; margin: 0 0 12px; }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      max-width: var(--content);
+      margin: 0 auto;
+      padding: 28px 20px 72px;
+    }
+
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 22px 24px;
+      margin-bottom: 18px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.16;
+      margin: 0 0 12px;
+    }
+
     h1 {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-size: clamp(1.8rem, 3vw, 2.55rem);
       font-family: Arial, Helvetica, sans-serif;
       font-weight: 600;
       letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 2vw, 1.55rem);
+    }
+
+    p {
+      margin: 0 0 12px;
+      max-width: 78ch;
+    }
+
+    .eyebrow {
+      font-size: 0.86rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--surface-2);
+    }
+
+    pre {
+      margin: 14px 0;
+      padding: 14px;
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    li {
       margin-bottom: 8px;
     }
-    h2 { font-size: clamp(1.2rem, 2vw, 1.5rem); margin-top: 32px; }
-    h3 { font-size: 1.02rem; margin-top: 20px; }
-    p { max-width: 76ch; margin: 0 0 12px; }
-    .eyebrow { font-size: 0.86rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
-    section {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 22px 24px; box-shadow: var(--shadow);
-      margin-bottom: 18px;
-    }
-    .table-wrap { overflow-x: auto; margin-top: 14px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-    th, td { text-align: left; vertical-align: top; padding: 11px 10px; border-bottom: 1px solid var(--border); }
-    th { background: var(--surface-2); }
-    pre {
-      margin: 14px 0; padding: 14px; overflow-x: auto; border-radius: 10px;
-      border: 1px solid var(--border); background: var(--surface-2);
-      font-size: 0.92rem; line-height: 1.5;
-    }
-    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    ul { margin: 0; padding-left: 1.2rem; }
-    li { margin-bottom: 8px; }
-    .note { color: var(--muted); font-size: 0.93rem; }
-    .back { display: inline-block; margin-bottom: 18px; font-size: 0.95rem; }
-    @media (max-width: 560px) {
-      .wrap { padding: 20px 14px 56px; }
-      section { padding: 18px 16px 20px; }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.93rem;
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <header class="topbar">
-      <div class="brand">
-        <svg class="logo" viewBox="0 0 48 48" aria-label="S2 logo" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="6" width="36" height="36" rx="10" stroke="currentColor" stroke-width="2.2"/>
-          <path d="M15 30.5C17.2 33 20 34 23 34C27.6 34 30.5 31.8 30.5 28.8C30.5 26.4 28.9 24.9 24.6 23.8L22 23.1C18.5 22.2 16.7 20.7 16.7 18.2C16.7 14.8 19.9 12.4 24.4 12.4C27.2 12.4 29.8 13.1 32 14.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M34.2 18.5L24.5 28.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        </svg>
-        <div class="brand-text">Algorithm specification</div>
-      </div>
-    </header>
 
-    <a class="back" href="index.html">&larr; Back to portfolio</a>
-
-    <p class="eyebrow">Protected public methodology</p>
-    <h1>Algorithm Specification</h1>
-    <p>FFD-based regime segmentation of macroeconomic release series.</p>
-    <p>This document describes a protected public version of the pipeline used to test whether the memory structure of a macroeconomic series changes across an exogenous regime window.</p>
+    <section>
+      <p class="eyebrow">Released algorithm specification</p>
+      <h1>Fractional Differencing Order under Exogenous Macroeconomic Regimes</h1>
+      <p>
+        Confirmation algorithm for exogenous break regimes.
+        The released procedure tests whether a pre-regime admissible fractional
+        differencing order remains valid inside a known macroeconomic regime window.
+      </p>
+    </section>
 
     <section>
       <h2>Notation</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Symbol</th><th>Definition</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><var>x<sub>t</sub></var></td><td>Raw macro release series</td></tr>
-            <tr><td><var>x&#771;<sub>t</sub></var></td><td>Transformed series: log for index-like variables, levels for rate-like variables</td></tr>
-            <tr><td><var>d</var></td><td>Fractional differencing order on an admissible grid in [0, 1]</td></tr>
-            <tr><td>FFD<sub><var>d</var></sub>(<var>x&#771;</var>)</td><td>Fixed-width fractionally differenced series</td></tr>
-            <tr><td><var>d</var>*</td><td>Minimal admissible differencing order under an ADF criterion</td></tr>
-            <tr><td><var>d</var><sub>global</sub></td><td>Minimal admissible order estimated on the baseline sample</td></tr>
-            <tr><td><var>d</var><sub>local</sub></td><td>Minimal admissible order estimated on the regime-training sample</td></tr>
-            <tr><td>&Delta;<var>d</var></td><td><var>d</var><sub>local</sub> &minus; <var>d</var><sub>global</sub></td></tr>
-          </tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Definition</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>x_t</code></td>
+            <td>Observed macroeconomic release series in point-in-time form</td>
+          </tr>
+          <tr>
+            <td><code>D^d(x)</code></td>
+            <td>Fixed-width fractional difference of order <code>d</code></td>
+          </tr>
+          <tr>
+            <td><code>d*<sub>global</sub></code></td>
+            <td>Smallest admissible fractional differencing order estimated on pre-regime data</td>
+          </tr>
+          <tr>
+            <td><code>d*<sub>local</sub></code></td>
+            <td>Smallest admissible fractional differencing order estimated on the regime training sample</td>
+          </tr>
+          <tr>
+            <td><code>Δd</code></td>
+            <td><code>d*<sub>local</sub> − d*<sub>global</sub></code></td>
+          </tr>
+          <tr>
+            <td><code>MSE<sub>global</sub></code></td>
+            <td>Out-of-sample mean squared error under the global operator</td>
+          </tr>
+          <tr>
+            <td><code>MSE<sub>local</sub></code></td>
+            <td>Out-of-sample mean squared error under the local operator</td>
+          </tr>
+          <tr>
+            <td><code>η</code></td>
+            <td>Minimum out-of-sample improvement threshold; released value <code>0.05</code></td>
+          </tr>
+          <tr>
+            <td><code>τ</code></td>
+            <td>Minimum separation threshold for <code>|Δd|</code>; released value <code>0.05</code></td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
     <section>
-      <h2>Pipeline</h2>
-
-      <h3>1. Transformation</h3>
-      <p>Each raw series is first mapped to an economically meaningful scale. For index-like series, the transformation is the natural logarithm of <var>x<sub>t</sub></var>. For rate-like series, the transformation is the identity, so the series is left in levels. This transformation is applied before fractional differencing.</p>
-
-      <h3>2. Fixed-width fractional differencing</h3>
-      <p>The transformed series is filtered using the fixed-width fractional differencing operator. The recursive binomial weights are defined as:</p>
-      <pre><code>w_0 = 1
-for k &ge; 1:
-    w_k = -w_(k-1) &times; (d - k + 1) / k</code></pre>
-      <p>The sequence of weights is truncated using a tolerance parameter. That truncation determines the effective width of the fixed-width filter.</p>
-
-      <h3>3. Minimal admissible order</h3>
-      <p>For each candidate order on a coarse admissible grid in [0, 1]:</p>
-      <ul>
-        <li>Apply FFD<sub><var>d</var></sub> to the transformed series.</li>
-        <li>Run the ADF test on the filtered output.</li>
-        <li>Return the smallest <var>d</var> that satisfies the stationarity criterion.</li>
-      </ul>
-      <p>If no candidate order satisfies the criterion, the pair is marked inadmissible at this stage.</p>
-
-      <h3>4. Regime validation</h3>
-      <p>For a (series, regime-window) pair:</p>
-      <ul>
-        <li>Apply pre-gates for minimum sample size.</li>
-        <li>Transform the baseline and regime samples.</li>
-        <li>Split the regime sample chronologically into training and test partitions.</li>
-        <li>Estimate <var>d</var><sub>global</sub> on the baseline.</li>
-        <li>Estimate <var>d</var><sub>local</sub> on the regime-training partition.</li>
-        <li>Score both orders out of sample on the regime test partition.</li>
-        <li>Compare predictive performance and |&Delta;<var>d</var>|.</li>
-      </ul>
-
-      <h3>5. Segmentation decision</h3>
-      <p>A pair is labelled <strong>SEGMENTED</strong> only if:</p>
-      <ul>
-        <li>The local order improves out-of-sample predictive loss relative to the baseline order by at least a prespecified threshold.</li>
-        <li>The absolute change in differencing order exceeds a materiality threshold.</li>
-      </ul>
-      <p class="note">Exact calibration belongs to the study design and can be stated in the paper without embedding the full internal calibration layer in public code.</p>
+      <h2>Empirical question and regime design</h2>
+      <p>
+        Given a known regime change at time T<sub>R</sub>, does the data-generating process
+        of a macroeconomic series require a different long-memory parameter to achieve the
+        same admissible level of stationarity and out-of-sample generalisation inside the
+        regime as outside it?
+      </p>
+      <p>
+        Regime boundaries are not inferred from the series. They are specified a priori
+        from documented economic events and institutional changes and treated as part of
+        the data-generating process.
+      </p>
+      <p>
+        This separation avoids circularity between regime detection and regime confirmation.
+        All series are used in point-in-time form: the baseline is strictly pre-window,
+        there is no forward fill, and right-censored windows at the analysis horizon are
+        explicitly flagged.
+      </p>
     </section>
 
     <section>
-      <h2>Public audit layer</h2>
-
-      <h3>Failure register</h3>
-      <p>Every non-segmented or infeasible pair receives a failure category, such as:</p>
-      <ul>
-        <li>Baseline too short</li>
-        <li>Regime sample too short</li>
-        <li>Transform error</li>
-        <li>ADF infeasible</li>
-        <li>OOS score undefined</li>
-        <li>Predictive gain below threshold</li>
-        <li>Memory shift below threshold</li>
-      </ul>
-
-      <h3>Reliability register</h3>
-      <p>The public reliability register is intentionally compact. It reports only the warnings implemented in the public code:</p>
-      <ul>
-        <li><code>boundary</code> — at least one estimated differencing order lies at the edge of the admissible public grid.</li>
-        <li><code>sample_bind</code> — the effective training or test support is at the public minimum floor imposed by the chronological split.</li>
-        <li><code>stability</code> — the absolute persistence shift |&Delta;<var>d</var>| exceeds a high-threshold cutoff, so interpretation should be cautious.</li>
-      </ul>
-      <p class="note">More detailed internal heuristics may be retained privately.</p>
+      <h2>Released procedure</h2>
+      <ol>
+        <li>Choose a series <code>x_t</code> and an exogenous regime window
+          <code>R = [T<sub>R</sub>, T<sub>E</sub>]</code>.</li>
+        <li>Construct the pre-regime baseline sample using observations strictly before <code>T<sub>R</sub></code>.</li>
+        <li>Split the regime window chronologically into a local training segment and a local test segment.</li>
+        <li>Map the series to the released level or log scale according to the public registry.</li>
+        <li>For each candidate <code>d</code> on the released admissible grid, compute <code>D^d(x)</code> using
+          fixed-width fractional differencing.</li>
+        <li>Apply the released ADF admissibility rule and select the smallest admissible order on the baseline sample.
+          This yields <code>d*<sub>global</sub></code>.</li>
+        <li>Apply the same rule on the regime training sample and select the smallest admissible order. This yields
+          <code>d*<sub>local</sub></code>.</li>
+        <li>Transform the regime data using both operators and evaluate out-of-sample performance with the released
+          AR(2) rolling scoring mechanism.</li>
+        <li>Compute <code>Δd = d*<sub>local</sub> − d*<sub>global</sub></code>.</li>
+        <li>Label the pair <code>SEGMENTED</code> only if both released gates hold jointly.</li>
+      </ol>
     </section>
 
     <section>
-      <h2>Reference</h2>
-      <p>L&oacute;pez de Prado, M. (2018). <em>Advances in Financial Machine Learning</em>. Wiley.</p>
+      <h2>Decision gate</h2>
+      <pre><code>SEGMENTED iff
+
+MSE_local ≤ (1 - η) · MSE_global
+and
+|Δd| ≥ τ
+
+Released values:
+η = 0.05
+τ = 0.05</code></pre>
+      <p>
+        This dual gate enforces predictive relevance and material separation in the memory parameter.
+      </p>
+    </section>
+
+    <section>
+      <h2>Interpretation of Δd</h2>
+      <ul>
+        <li><code>Δd &gt; 0</code>: the regime requires more differencing than the baseline estimate.</li>
+        <li><code>Δd &lt; 0</code>: the regime requires less differencing than the baseline estimate.</li>
+        <li>Under fractional differencing, smaller <code>d</code> implies greater preservation of low-frequency
+          dependence.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Released output</h2>
+      <pre><code>{
+  "pair_id": "SERIES|Window",
+  "label": "SEGMENTED or GLOBAL",
+  "d_global": 0.00,
+  "d_local": 0.00,
+  "delta_d": 0.00,
+  "mse_global": 0.0000,
+  "mse_local": 0.0000,
+  "mse_improvement": 0.0000,
+  "reliability_flag": "none | boundary | sample_bind | stability"
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>Conclusion</h2>
+      <ul>
+        <li><strong>Regime-conditional memory under exogenous breaks.</strong> Economic chronologies define exogenous
+          windows. The pipeline tests whether these windows are associated with changes in long-memory behaviour that
+          justify a regime-specific differencing order rather than a single global operator.</li>
+        <li><strong>Confirmation test for d-invariance.</strong> ADF defines the feasible region for d. Out-of-sample
+          generalisation error under a common AR(2) scoring rule is the validation functional. The choice between global
+          and local fractional differencing is empirical and falsifiable.</li>
+        <li><strong>Structured diagnostic output.</strong> Regime-level tables and compact reliability flags show where
+          a local differencing order is beneficial, where it is fragile, and where the global operator remains adequate.
+        </li>
+      </ul>
+      <p>
+        For a non-trivial subset of macroeconomic series and regimes, regime-specific
+        fractional differencing yields lower out-of-sample error than a global differencing
+        order under the same stationarity constraint. For the remainder, the global operator
+        is sufficient. The result is conditional, not universal.
+      </p>
+    </section>
+
+    <section>
+      <h2>Boundary of the public layer</h2>
+      <ul>
+        <li>Public: methodological core, released gates, selected confirmed pairs, and compact reliability logic.</li>
+        <li>Omitted: proprietary data, private paths, internal notebook chains, private robustness infrastructure, and
+          private registries.</li>
+        <li>This document specifies the released method only. It does not reproduce the private research system end to
+          end.</li>
+      </ul>
+      <p class="muted"><a href="index.html">Back to website</a></p>
     </section>
 
   </div>
 </body>
+
 </html>
