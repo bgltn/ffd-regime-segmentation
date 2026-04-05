@@ -39,7 +39,6 @@ Public defaults are provided for usability.
 
 - Raw data
 - Private file paths
-- Vendor-specific ingestion code
 - Internal notebooks
 - Full internal robustness heuristics
 - Study-specific regime catalogues and series registries
@@ -51,7 +50,7 @@ import numpy as np
 import core_pipeline as cp
 
 cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
-# Alternatively, register the series in cp.LOG_SERIES if log transformation is appropriate.
+# Alternatively, use cp.LOG_SERIES if log transformation is appropriate.
 
 before = np.array([...], dtype=float)
 during = np.array([...], dtype=float)
