@@ -1,4 +1,4 @@
-# FFD Regime Segmentation Pipeline
+# Fractional Differencing Order under Regimes
 
 Protected public methodology support for a study on fractionally differentiated regime segmentation of macroeconomic series.
 
