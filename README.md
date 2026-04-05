@@ -47,7 +47,7 @@ Public defaults are provided for usability.
 
 ```python
 import numpy as np
-import core_pipeline as cp
+from src import core_pipeline as cp
 
 cp.LEVEL_SERIES = frozenset({"YOUR_SERIES"})
 # Alternatively, use cp.LOG_SERIES if log transformation is appropriate.

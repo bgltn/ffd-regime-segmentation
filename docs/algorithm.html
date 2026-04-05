@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithm Specification — FFD Regime Segmentation</title>
+  <meta name="description" content="Algorithm specification for the FFD-based regime segmentation pipeline.">
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --surface-2: #f2eee7;
+      --text: #1b1915;
+      --muted: #666158;
+      --border: #ddd7cc;
+      --accent: #145c72;
+      --radius: 12px;
+      --shadow: 0 8px 28px rgba(31, 26, 19, 0.05);
+      --content: 860px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: var(--content); margin: 0 auto; padding: 28px 20px 72px; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .logo { width: 34px; height: 34px; color: var(--accent); flex: 0 0 auto; }
+    .brand-text { font-size: 0.95rem; color: var(--muted); letter-spacing: 0.02em; }
+    h1, h2, h3 { line-height: 1.16; margin: 0 0 12px; }
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    h2 { font-size: clamp(1.2rem, 2vw, 1.5rem); margin-top: 32px; }
+    h3 { font-size: 1.02rem; margin-top: 20px; }
+    p { max-width: 76ch; margin: 0 0 12px; }
+    .eyebrow { font-size: 0.86rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; }
+    section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 22px 24px; box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+    .table-wrap { overflow-x: auto; margin-top: 14px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { text-align: left; vertical-align: top; padding: 11px 10px; border-bottom: 1px solid var(--border); }
+    th { background: var(--surface-2); }
+    pre {
+      margin: 14px 0; padding: 14px; overflow-x: auto; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--surface-2);
+      font-size: 0.92rem; line-height: 1.5;
+    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    ul { margin: 0; padding-left: 1.2rem; }
+    li { margin-bottom: 8px; }
+    .note { color: var(--muted); font-size: 0.93rem; }
+    .back { display: inline-block; margin-bottom: 18px; font-size: 0.95rem; }
+    @media (max-width: 560px) {
+      .wrap { padding: 20px 14px 56px; }
+      section { padding: 18px 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 48 48" aria-label="S2 logo" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="36" height="36" rx="10" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M15 30.5C17.2 33 20 34 23 34C27.6 34 30.5 31.8 30.5 28.8C30.5 26.4 28.9 24.9 24.6 23.8L22 23.1C18.5 22.2 16.7 20.7 16.7 18.2C16.7 14.8 19.9 12.4 24.4 12.4C27.2 12.4 29.8 13.1 32 14.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M27.2 18.5H34.2V25.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M34.2 18.5L24.5 28.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">Algorithm specification</div>
+      </div>
+    </header>
+
+    <a class="back" href="index.html">&larr; Back to portfolio</a>
+
+    <p class="eyebrow">Protected public methodology</p>
+    <h1>Algorithm Specification</h1>
+    <p>FFD-based regime segmentation of macroeconomic release series.</p>
+    <p>This document describes a protected public version of the pipeline used to test whether the memory structure of a macroeconomic series changes across an exogenous regime window.</p>
+
+    <section>
+      <h2>Notation</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Symbol</th><th>Definition</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><var>x<sub>t</sub></var></td><td>Raw macro release series</td></tr>
+            <tr><td><var>x&#771;<sub>t</sub></var></td><td>Transformed series: log for index-like variables, levels for rate-like variables</td></tr>
+            <tr><td><var>d</var></td><td>Fractional differencing order on an admissible grid in [0, 1]</td></tr>
+            <tr><td>FFD<sub><var>d</var></sub>(<var>x&#771;</var>)</td><td>Fixed-width fractionally differenced series</td></tr>
+            <tr><td><var>d</var>*</td><td>Minimal admissible differencing order under an ADF criterion</td></tr>
+            <tr><td><var>d</var><sub>global</sub></td><td>Minimal admissible order estimated on the baseline sample</td></tr>
+            <tr><td><var>d</var><sub>local</sub></td><td>Minimal admissible order estimated on the regime-training sample</td></tr>
+            <tr><td>&Delta;<var>d</var></td><td><var>d</var><sub>local</sub> &minus; <var>d</var><sub>global</sub></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Pipeline</h2>
+
+      <h3>1. Transformation</h3>
+      <p>Each raw series is first mapped to an economically meaningful scale. For index-like series, the transformation is the natural logarithm of <var>x<sub>t</sub></var>. For rate-like series, the transformation is the identity, so the series is left in levels. This transformation is applied before fractional differencing.</p>
+
+      <h3>2. Fixed-width fractional differencing</h3>
+      <p>The transformed series is filtered using the fixed-width fractional differencing operator. The recursive binomial weights are defined as:</p>
+      <pre><code>w_0 = 1
+for k &ge; 1:
+    w_k = -w_(k-1) &times; (d - k + 1) / k</code></pre>
+      <p>The sequence of weights is truncated using a tolerance parameter. That truncation determines the effective width of the fixed-width filter.</p>
+
+      <h3>3. Minimal admissible order</h3>
+      <p>For each candidate order on a coarse admissible grid in [0, 1]:</p>
+      <ul>
+        <li>Apply FFD<sub><var>d</var></sub> to the transformed series.</li>
+        <li>Run the ADF test on the filtered output.</li>
+        <li>Return the smallest <var>d</var> that satisfies the stationarity criterion.</li>
+      </ul>
+      <p>If no candidate order satisfies the criterion, the pair is marked inadmissible at this stage.</p>
+
+      <h3>4. Regime validation</h3>
+      <p>For a (series, regime-window) pair:</p>
+      <ul>
+        <li>Apply pre-gates for minimum sample size.</li>
+        <li>Transform the baseline and regime samples.</li>
+        <li>Split the regime sample chronologically into training and test partitions.</li>
+        <li>Estimate <var>d</var><sub>global</sub> on the baseline.</li>
+        <li>Estimate <var>d</var><sub>local</sub> on the regime-training partition.</li>
+        <li>Score both orders out of sample on the regime test partition.</li>
+        <li>Compare predictive performance and |&Delta;<var>d</var>|.</li>
+      </ul>
+
+      <h3>5. Segmentation decision</h3>
+      <p>A pair is labelled <strong>SEGMENTED</strong> only if:</p>
+      <ul>
+        <li>The local order improves out-of-sample predictive loss relative to the baseline order by at least a prespecified threshold.</li>
+        <li>The absolute change in differencing order exceeds a materiality threshold.</li>
+      </ul>
+      <p class="note">Exact calibration belongs to the study design and can be stated in the paper without embedding the full internal calibration layer in public code.</p>
+    </section>
+
+    <section>
+      <h2>Public audit layer</h2>
+
+      <h3>Failure register</h3>
+      <p>Every non-segmented or infeasible pair receives a failure category, such as:</p>
+      <ul>
+        <li>Baseline too short</li>
+        <li>Regime sample too short</li>
+        <li>Transform error</li>
+        <li>ADF infeasible</li>
+        <li>OOS score undefined</li>
+        <li>Predictive gain below threshold</li>
+        <li>Memory shift below threshold</li>
+      </ul>
+
+      <h3>Reliability register</h3>
+      <p>The public reliability register is intentionally compact. It reports only the warnings implemented in the public code:</p>
+      <ul>
+        <li><code>boundary</code> — at least one estimated differencing order lies at the edge of the admissible public grid.</li>
+        <li><code>sample_bind</code> — the effective training or test support is at the public minimum floor imposed by the chronological split.</li>
+        <li><code>stability</code> — the absolute persistence shift |&Delta;<var>d</var>| exceeds a high-threshold cutoff, so interpretation should be cautious.</li>
+      </ul>
+      <p class="note">More detailed internal heuristics may be retained privately.</p>
+    </section>
+
+    <section>
+      <h2>Reference</h2>
+      <p>L&oacute;pez de Prado, M. (2018). <em>Advances in Financial Machine Learning</em>. Wiley.</p>
+    </section>
+
+  </div>
+</body>
+</html>
