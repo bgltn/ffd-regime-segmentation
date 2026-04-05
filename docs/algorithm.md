@@ -21,26 +21,21 @@ This document describes a protected public version of the pipeline used to test 
 
 ### 1. Transformation
 
-Each raw series is first mapped to an economically meaningful scale:
+Each raw series is first mapped to an economically meaningful scale.
+For index-like series, the transformation is the natural logarithm of x_t.
+For rate-like series, the transformation is the identity, so the series is left in levels.
+This transformation is applied before fractional differencing.
 
-\[
-\tilde{x}_t =
-\begin{cases}
-\log(x_t), & \text{for index-like series} \\
- x_t, & \text{for rate-like series}
-\end{cases}
-\]
+### 2. Fixed-width fractional differencing
 
-This transformation is applied before FFD.
+The transformed series is then filtered using the fixed-width fractional differencing operator.
+The recursive binomial weights are defined as follows:
+w_0 = 1
+for k greater than or equal to 1,
+w_k = - w_(k-1) × (d - k + 1) / k
 
-### 2. Fixed-width FFD
-
-The transformed series is filtered using the fixed-width fractional differencing operator with recursive binomial weights:
-\[
-w_0 = 1, \qquad
-w_k = -\,w_{k-1}\,\frac{d - (k-1)}{k}, \quad k \ge 1
-\]
-Weights are truncated using a tolerance parameter, which determines the effective filter width.
+The sequence of weights is truncated using a tolerance parameter.
+That truncation determines the effective width of the fixed-width filter.
 
 ### 3. Minimal admissible order
 
