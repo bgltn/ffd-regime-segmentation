@@ -78,7 +78,7 @@ Before calling `validate_regime(...)`, register the series in `LOG_SERIES` or `L
 
 ## Design notes
 
-- Transformation is applied before FFD.
+- Transformation is applied before Fractional Differencing (FFD) Order estimation.
 - FFD uses the fixed-width López de Prado variant.
 - Train/test splitting is strictly chronological.
 - The public reliability register is intentionally compact.
