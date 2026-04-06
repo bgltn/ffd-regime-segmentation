@@ -1,4 +1,5 @@
-# Fractional Differencing Order under Regimes
+# Fractional Differencing Order under macroeconomic regimes
+A selective confirmation study under sparse macroeconomic release information
 
 Protected public methodology support for a study on fractionally differentiated regime segmentation of macroeconomic series.
 
